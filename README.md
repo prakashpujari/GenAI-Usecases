@@ -182,6 +182,7 @@ error text here and I'll help debug it. If you'd like I can also:
 Enjoy exploring the Healthcare Assistant RAG demo — tell me which
 improvement you'd like next and I'll implement it.
 # GenAI-Usecases
-Final Healthcare assistant chat bot.
 
-![App Screenshot](Healthcare_Assistant\docs\images\Healthcare Assistant.png)
+🩺 Final Healthcare Assistan
+
+![App Screenshot](Healthcare_Assistant\docs\images\HealthcareAssistant.png)

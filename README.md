@@ -185,4 +185,4 @@ improvement you'd like next and I'll implement it.
 
 🩺 Final Healthcare Assistan
 
-![App Screenshot](Healthcare_Assistant\docs\images\HealthcareAssistant.png)
+![App Screenshot](Healthcare_Assistant/docs/images/HealthcareAssistant.png)

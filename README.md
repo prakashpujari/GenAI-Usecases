@@ -183,6 +183,6 @@ Enjoy exploring the Healthcare Assistant RAG demo — tell me which
 improvement you'd like next and I'll implement it.
 # GenAI-Usecases
 
-🩺 Final Healthcare Assistan
+🩺 Final Healthcare Assistant
 
 ![App Screenshot](Healthcare_Assistant/docs/images/HealthcareAssistant.png)

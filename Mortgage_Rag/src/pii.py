@@ -3,6 +3,9 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from typing import Iterable
+from .logger import get_logger
+
+logger = get_logger(__name__)
 
 
 @dataclass(frozen=True)
@@ -28,10 +31,15 @@ _PII_PATTERNS: list[tuple[str, re.Pattern]] = [
 
 
 def detect_pii(text: str) -> list[PiiMatch]:
+    logger.debug(f"Detecting PII in text (length={len(text)})")
     matches: list[PiiMatch] = []
     for label, pattern in _PII_PATTERNS:
-        for match in pattern.finditer(text):
+        found = list(pattern.finditer(text))
+        if found:
+            logger.debug(f"Found {len(found)} {label} matches")
+        for match in found:
             matches.append(PiiMatch(label=label, value=match.group(0)))
+    logger.info(f"PII detection complete: {len(matches)} total matches found")
     return matches
 
 
@@ -40,9 +48,16 @@ def contains_pii(text: str) -> bool:
 
 
 def redact_pii(text: str) -> str:
+    logger.debug(f"Redacting PII from text (length={len(text)})")
     redacted = text
+    redaction_count = 0
     for label, pattern in _PII_PATTERNS:
+        matches_before = len(pattern.findall(redacted))
         redacted = pattern.sub(f"[{label}_REDACTED]", redacted)
+        if matches_before > 0:
+            redaction_count += matches_before
+            logger.debug(f"Redacted {matches_before} {label} instances")
+    logger.info(f"PII redaction complete: {redaction_count} total redactions")
     return redacted
 
 

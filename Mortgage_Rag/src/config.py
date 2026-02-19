@@ -3,6 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 import os
+from .logger import get_logger
+
+logger = get_logger(__name__)
 
 
 @dataclass(frozen=True)
@@ -18,10 +21,14 @@ class Settings:
 
 
 def load_settings() -> Settings:
+    logger.info("Loading application settings")
     base_dir = Path(os.getenv("MORTGAGE_RAG_BASE", Path.cwd()))
     data_dir = Path(os.getenv("MORTGAGE_RAG_DATA", base_dir / "data"))
     output_dir = Path(os.getenv("MORTGAGE_RAG_OUTPUT", base_dir / "output"))
     faiss_dir = Path(os.getenv("MORTGAGE_RAG_FAISS", base_dir / "faiss"))
+    
+    has_api_key = bool(os.getenv("OPENAI_API_KEY"))
+    logger.info(f"Configuration loaded: data_dir={data_dir}, openai_key_present={has_api_key}")
 
     return Settings(
         data_dir=data_dir,

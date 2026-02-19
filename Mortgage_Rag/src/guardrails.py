@@ -3,6 +3,9 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from typing import Optional
+from .logger import get_logger
+
+logger = get_logger(__name__)
 
 
 @dataclass
@@ -49,9 +52,11 @@ class InputGuardrails:
     @classmethod
     def validate_query(cls, query: str) -> GuardrailResult:
         """Validate a search query against all guardrails"""
+        logger.info(f"Validating query: length={len(query)}")
         
         # Check for empty or whitespace-only queries
         if not query or not query.strip():
+            logger.warning("Query validation failed: empty query")
             return GuardrailResult(
                 passed=False,
                 reason="Query is empty",
@@ -60,6 +65,7 @@ class InputGuardrails:
         
         # Check length constraints
         if len(query) < cls.MIN_QUERY_LENGTH:
+            logger.warning(f"Query validation failed: too short ({len(query)} < {cls.MIN_QUERY_LENGTH})")
             return GuardrailResult(
                 passed=False,
                 reason=f"Query too short (minimum {cls.MIN_QUERY_LENGTH} characters)",
@@ -67,6 +73,7 @@ class InputGuardrails:
             )
         
         if len(query) > cls.MAX_QUERY_LENGTH:
+            logger.warning(f"Query validation failed: too long ({len(query)} > {cls.MAX_QUERY_LENGTH})")
             return GuardrailResult(
                 passed=False,
                 reason=f"Query too long (maximum {cls.MAX_QUERY_LENGTH} characters)",
@@ -76,6 +83,7 @@ class InputGuardrails:
         # Check for prompt injection attempts
         for pattern in cls.PROMPT_INJECTION_PATTERNS:
             if re.search(pattern, query, re.IGNORECASE):
+                logger.warning(f"Query validation failed: potential prompt injection detected")
                 return GuardrailResult(
                     passed=False,
                     reason="Potential prompt injection detected",
@@ -85,6 +93,7 @@ class InputGuardrails:
         # Check for inappropriate content
         for pattern in cls.INAPPROPRIATE_PATTERNS:
             if re.search(pattern, query, re.IGNORECASE):
+                logger.warning(f"Query validation failed: inappropriate content detected")
                 return GuardrailResult(
                     passed=False,
                     reason="Query contains inappropriate or suspicious content",
@@ -96,6 +105,7 @@ class InputGuardrails:
         has_relevant_keyword = any(keyword in query_lower for keyword in cls.ALLOWED_TOPICS_KEYWORDS)
         
         if not has_relevant_keyword:
+            logger.info("Query may not be mortgage-related (soft warning)")
             # This is a soft warning, still passes but with a message
             return GuardrailResult(
                 passed=True,
@@ -103,6 +113,7 @@ class InputGuardrails:
                 suggested_action="For best results, search for mortgage-related information (income, loans, employment, etc.)"
             )
         
+        logger.info("Query validation passed")
         return GuardrailResult(passed=True)
 
 
@@ -114,14 +125,17 @@ class OutputGuardrails:
         """Validate search results don't contain unreacted PII"""
         from src.pii import contains_pii
         
+        logger.info(f"Validating {len(results)} search results")
         for idx, result in enumerate(results):
             if contains_pii(result):
+                logger.warning(f"PII detected in search result {idx + 1}")
                 return GuardrailResult(
                     passed=False,
                     reason=f"PII detected in search result {idx + 1}",
                     suggested_action="Results have been filtered for safety"
                 )
         
+        logger.info("Search results validation passed")
         return GuardrailResult(passed=True)
     
     @staticmethod
@@ -141,15 +155,18 @@ class OutputGuardrails:
 
 def apply_input_guardrails(query: str) -> GuardrailResult:
     """Apply all input guardrails to a query"""
+    logger.info("Applying input guardrails")
     return InputGuardrails.validate_query(query)
 
 
 def apply_output_guardrails(results: list[str]) -> tuple[list[str], GuardrailResult]:
     """Apply output guardrails and return sanitized results"""
+    logger.info(f"Applying output guardrails to {len(results)} results")
     # Validate results
     validation = OutputGuardrails.validate_search_results(results)
     
     # Sanitize all results
     sanitized_results = [OutputGuardrails.sanitize_result(result) for result in results]
+    logger.info("Output guardrails applied and results sanitized")
     
     return sanitized_results, validation

@@ -1,0 +1,21 @@
+**Underwriting Decision Summary (Recommendation Only)**
+- **Recommendation:** Approve (recommendation only; requires human underwriter approval)
+- **Borrower Snapshot:**
+  - Credit Score: 742.0
+  - DTI: 27.21%
+  - LTV: 75.00%
+- **Hard Rules (Must Pass):**
+  - Minimum credit score: PASS (value=742.00, threshold >= 620.00)
+  - Maximum DTI: PASS (value=27.21, threshold <= 43.00)
+  - Maximum LTV: PASS (value=75.00, threshold <= 80.00)
+- **Soft Guidelines (Underwriter Judgment):**
+  - Employment stability: PASS (tenure_months=49, guideline >= 24)
+- **Key Risks / Reasons:**
+  - All evaluated hard rules passed and no material risk flags identified
+- **Policy Citations:**
+  - Source: sample_loan_application.pdf | Section: 0 | Evidence: Mortgage Loan Application Summary Borrower: Alex Johnson DOB: [DOB_REDACTED] Property Address: [ADDRESS_REDACTED], Austin, TX 78701 Credit Score: 742 Loan Amount: $420,000.00 Property Value: $560,000.00 Monthly Income: $6,800.00 Monthly Debt: $1,850.00 Employment Tenure: 49 month
+  - Source: sample_bank_statement.pdf | Section: 0 | Evidence: Bank Statement Borrower: Alex Johnson Statement Period: [DOB_REDACTED] - [DOB_REDACTED] Account Type: Checking Beginning Balance: $41,280.00 Deposits & Credits: $7,920.00 Withdrawals & Debits: $6,410.00 Available Balance: $42,790.00 Monthly Debt: $1,850.00 Mortgage Reserve Months
+  - Source: adp-pay-stub-template.pdf | Section: 0 | Evidence: SAMPLE TEAR HERE                      ©2008, 2001, 2000, 1999 ADP, Inc. ▲ THE ORIGINAL DOCUMENT HAS A REFLECTIVE WATERMARK ON THE BACK.THE ORIGINAL DOCUMENT HAS A REFLECTIVE WATERMARK ON THE BACK. HOLD AT AN ANGLE TO VIEW WHEN CHECKING THE ENDORSEMENT.HOLD AT AN ANGLE TO VIEW WHE
+  - Source: sample_employment_letter.pdf | Section: 0 | Evidence: Verification of Employment Letter Employment Letter Employee Name: Alex Johnson Employer Name: Acme Lending LLC Position: Senior Operations Analyst Employment Start Date: [DOB_REDACTED] Employment Tenure: 49 months Gross Monthly Income: $6,800.00 Status: Full-time, non-probationa
+  - Source: W2_Interactive.pdf | Section: 0 | Evidence: Sample W-2 To read a brief description of a box on the W-2, move your mouse pointer over a box in the sample form.   Important: The information in this sample is specific to RUN powered by ADP only and should not be used as the official  W-2. In addition  to this sample, it’s imp
+- **Control Note:** This system provides decision support only and never makes final credit decisions.

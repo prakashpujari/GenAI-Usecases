@@ -46,26 +46,26 @@ SecureMortgageAI is a Retrieval-Augmented Generation (RAG) chatbot that helps us
 
 | Document | Description | Time to Read |
 |----------|-------------|--------------|
-| **[⚡ QUICK_START.md](QUICK_START.md)** | 5-minute getting started guide | 5 min |
-| **[📘 USER_GUIDE.md](USER_GUIDE.md)** | End-to-end walkthrough with UI examples | 20 min |
-| **[📸 SCREENSHOT_GUIDE.md](SCREENSHOT_GUIDE.md)** | Professional screenshot capture instructions | 15 min |
-| **[🏗️ ARCHITECTURE.md](ARCHITECTURE.md)** | System architecture and data flow diagrams | 10 min |
+| **[⚡ QUICK_START.md](docs/QUICK_START.md)** | 5-minute getting started guide | 5 min |
+| **[📘 USER_GUIDE.md](docs/USER_GUIDE.md)** | End-to-end walkthrough with UI examples | 20 min |
+| **[📸 SCREENSHOT_GUIDE.md](docs/SCREENSHOT_GUIDE.md)** | Professional screenshot capture instructions | 15 min |
+| **[🏗️ ARCHITECTURE.md](docs/ARCHITECTURE.md)** | System architecture and data flow diagrams | 10 min |
 | **[📄 README.md](README.md)** | This file - Technical overview | 10 min |
 
 ### 🎯 Quick Navigation
 
 **For New Users:**
-1. Start here: [QUICK_START.md](QUICK_START.md) (5 min)
-2. Deep dive: [USER_GUIDE.md](USER_GUIDE.md) (20 min)
-3. Test it: Run `python test_guardrails.py`
+1. Start here: [QUICK_START.md](docs/QUICK_START.md) (5 min)
+2. Deep dive: [USER_GUIDE.md](docs/USER_GUIDE.md) (20 min)
+3. Test it: Run `python unit-testing/test_guardrails.py`
 
 **For Documentation:**
-1. Capture screenshots: [SCREENSHOT_GUIDE.md](SCREENSHOT_GUIDE.md)
+1. Capture screenshots: [SCREENSHOT_GUIDE.md](docs/SCREENSHOT_GUIDE.md)
 2. Run helper: `powershell scripts/screenshot_helper.ps1`
 
 **For Developers:**
-1. Architecture: [ARCHITECTURE.md](ARCHITECTURE.md)
-2. Tests: `test_*.py` files
+1. Architecture: [ARCHITECTURE.md](docs/ARCHITECTURE.md)
+2. Tests: `unit-testing/test_*.py` files
 3. Source: `src/` directory
 
 ---
@@ -203,10 +203,12 @@ SecureMortgageAI/
 ├── scripts/                    # Utility scripts
 │   └── generate_sample_pdfs.py # Sample data generator
 │
-└── tests/
-    ├── test_guardrails.py      # Guardrail test suite
-    ├── test_llm_summary.py     # LLM integration tests
-    └── demo_search_filtering.py # Search demo
+├── unit-testing/               # Automated tests
+│   ├── test_guardrails.py      # Guardrail test suite
+│   ├── test_llm_summary.py     # LLM integration tests
+│   └── test_aus_api.py         # AUS API tests
+│
+└── demo_search_filtering.py    # Search demo
 ```
 
 ---
@@ -229,7 +231,7 @@ Edit [src/config.py](src/config.py) to customize:
 
 ### Run Guardrails Tests
 ```powershell
-python test_guardrails.py
+python unit-testing/test_guardrails.py
 ```
 
 Expected output:
@@ -238,12 +240,79 @@ Expected output:
 
 ### Test LLM Integration
 ```powershell
-python test_llm_summary.py
+python unit-testing/test_llm_summary.py
 ```
 
 ### Demo Search Filtering
 ```powershell
 python demo_search_filtering.py
+```
+
+---
+
+## 🚀 AUS Microservice (FastAPI)
+
+Run the Automated Underwriting System microservice:
+
+```powershell
+uvicorn src.aus.api:app --reload --host 0.0.0.0 --port 8000
+```
+
+Health check:
+
+```powershell
+curl http://localhost:8000/health
+```
+
+Evaluate AUS:
+
+```powershell
+curl -X POST http://localhost:8000/aus/evaluate ^
+  -H "Content-Type: application/json" ^
+  -d "{\"credit_score\":742,\"dti\":29.5,\"ltv\":75,\"income\":120000,\"loan_amount\":420000,\"property_value\":560000,\"loan_type\":\"Conventional\",\"reserves\":6,\"occupancy_type\":\"Primary\"}"
+```
+
+The endpoint returns structured JSON with:
+- `finding` (`Approve/Eligible`, `Refer/Eligible`, `Refer/Ineligible`)
+- `reasons`
+- `required_documents`
+- `rule_evaluations`
+
+### Run with Docker
+
+Build AUS image:
+
+```powershell
+docker build -f deployments/Dockerfile.aus -t mortgage-aus:latest .
+```
+
+Run AUS container:
+
+```powershell
+docker run --rm -p 8000:8000 mortgage-aus:latest
+```
+
+Run with Docker Compose:
+
+```powershell
+docker compose -f deployments/docker-compose.yml up --build -d
+```
+
+Stop compose stack:
+
+```powershell
+docker compose -f deployments/docker-compose.yml down
+```
+
+### Demo Assets
+
+- Postman collection: `api/AUS.postman_collection.json`
+- PowerShell scenario runner: `scripts/run_aus_scenarios.ps1`
+
+Run all three scenarios locally (service must be running on port 8000):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/run_aus_scenarios.ps1
 ```
 
 ---
@@ -381,3 +450,5 @@ Built with:
 ---
 
 **Made with ❤️ for secure mortgage document processing**
+
+![alt text](image.png)

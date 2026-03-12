@@ -1,0 +1,110 @@
+{
+  "info": {
+    "name": "Mortgage AUS API",
+    "_postman_id": "f4b72b2b-3c2f-4a6e-b30d-a5c58f6bd420",
+    "description": "End-to-end AUS scenarios: Approve/Eligible, Refer/Eligible, Refer/Ineligible",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      }
+    },
+    {
+      "name": "AUS - Approve Eligible",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"credit_score\": 742,\n  \"dti\": 29.5,\n  \"ltv\": 75.0,\n  \"income\": 120000,\n  \"loan_amount\": 420000,\n  \"property_value\": 560000,\n  \"loan_type\": \"Conventional\",\n  \"reserves\": 6,\n  \"occupancy_type\": \"Primary\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/aus/evaluate",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "aus",
+            "evaluate"
+          ]
+        }
+      }
+    },
+    {
+      "name": "AUS - Refer Eligible",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"credit_score\": 742,\n  \"dti\": 44.0,\n  \"ltv\": 75.0,\n  \"income\": 120000,\n  \"loan_amount\": 420000,\n  \"property_value\": 560000,\n  \"loan_type\": \"Conventional\",\n  \"reserves\": 6,\n  \"occupancy_type\": \"Primary\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/aus/evaluate",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "aus",
+            "evaluate"
+          ]
+        }
+      }
+    },
+    {
+      "name": "AUS - Refer Ineligible",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"credit_score\": 600,\n  \"dti\": 29.5,\n  \"ltv\": 75.0,\n  \"income\": 120000,\n  \"loan_amount\": 420000,\n  \"property_value\": 560000,\n  \"loan_type\": \"Conventional\",\n  \"reserves\": 6,\n  \"occupancy_type\": \"Primary\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/aus/evaluate",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "aus",
+            "evaluate"
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000"
+    }
+  ]
+}

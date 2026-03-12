@@ -146,7 +146,7 @@ SecureMortgageAI/
 ├── scripts/                       # Helper scripts
 │   └── screenshot_helper.ps1     # Screenshot organizer
 │
-├── tests/
+├── unit-testing/
 │   ├── test_guardrails.py        # Security tests
 │   ├── test_llm_summary.py       # LLM tests
 │   └── test_ssn_*.py             # PII tests
@@ -282,16 +282,16 @@ Custom query testing (15 min)
 streamlit run app.py
 
 # Run tests
-python test_guardrails.py
-python test_ssn_comprehensive.py
-python test_llm_response_redaction.py
+python unit-testing/test_guardrails.py
+python unit-testing/test_ssn_comprehensive.py
+python unit-testing/test_llm_response_redaction.py
 
 # Screenshot helper
 powershell scripts/screenshot_helper.ps1
 
 # View documentation
-code QUICK_START.md
-code USER_GUIDE.md
+code docs/QUICK_START.md
+code docs/USER_GUIDE.md
 ```
 
 ### Key Files

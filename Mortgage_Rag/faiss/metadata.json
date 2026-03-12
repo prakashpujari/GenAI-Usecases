@@ -1,0 +1,57 @@
+[
+  {
+    "doc_id": "adp-pay-stub-template",
+    "chunk_id": 0,
+    "text": "SAMPLE\nTEAR HERE                      \u00a92008, 2001, 2000, 1999 ADP, Inc.\n\u25b2\nTHE ORIGINAL DOCUMENT HAS A REFLECTIVE WATERMARK ON THE BACK.THE ORIGINAL DOCUMENT HAS A REFLECTIVE WATERMARK ON THE BACK. HOLD AT AN ANGLE TO VIEW WHEN CHECKING THE ENDORSEMENT.HOLD AT AN ANGLE TO VIEW WHEN CHECKING THE ENDORSEMENT.\nE01382723\nCO. FILE DEPT. CLOCK NUMBER\nABC 126543 123456 12345 00000000      1\nSocial Security Number: [SSN_REDACTED]\nTaxable Marital Status: Married\nExemptions/Allowances:\nFederal: 3, $25  Additional  Tax\nState: 2\nLocal: [ADDRESS_REDACTED]\nANYTOWN, USA 10101\nSAMPLE \nNON-NEGOTIABLE\nVOID VOID VOID\nACME SUPPLIES CORP. Payroll  check  number: [PHONE_REDACTED]\n[ADDRESS_REDACTED] Pay  date: 7/25/2008\nANYTOWN,  USA  10101 Social  Security  No. [SSN_REDACTED]\nPay  to  the\norder of:JANE  HARPER\nT"
+  },
+  {
+    "doc_id": "adp-pay-stub-template",
+    "chunk_id": 1,
+    "text": "his  amount: TWO  HUNDRED  NINETY-ONE  AND  90/100  DOLLARS $291.[ADDRESS_REDACTED]  ADDRESS AUTHORIZED  SIGNATURE\nCITY  STATE  ZIP VOID  AFTER  90 DAYS\n/symbol3001379/symbol3 /symbol1122000496/symbol14040110157/symbol3\nEarnings rate hours this period year to date\nRegular 10.00 32.00 320.00 16,640.00\nOvertime 15.00 1.00 15.00 780.00\nHoliday 10.00 8.00 80.00 4,160.00\nTuition37.43* 1,946.80\nGross Pay $  452.43 23,526.80\nDeductions Statutory\nFederal Income Tax - 40.60 2,111.20\nSocial Security Tax - 28.05 1,458.60\nMedicare Tax - 6.56 341.12\nNY State Income Tax - 8.43 438.36\nNYC Income Tax - 5.94 308.88\nNY SUI/SDI Tax - 0.60 31.20\nOther\nBond - 5.00 100.00\n401(k) - 28.85* 1,500.20\nStock Plan -15.00    150.00\nLife Insurance - 5.00  50.00\nLoan - 30.00 150.00\nAdjustment\nLife Insurance + 13.50\nNet P"
+  },
+  {
+    "doc_id": "adp-pay-stub-template",
+    "chunk_id": 2,
+    "text": "ay $ 291.90\n* Excluded  from  federal  taxable  wages\nYour  federal  wages  this  period  are  $386.15\nOther Benefits and\nInformationthis period total to date\nGroup Term Life 0.51 27.00\nLoan Amt Paid 840.00\nVac  Hrs40.00\nSick Hrs 16.00\nTitle Operator\nImportant  Notes\nEFFECTIVE THIS PAY PERIOD YOUR REGULAR \nHOURLY RATE HAS BEEN CHANGED FROM $8.00 \nTO $10.[ADDRESS_REDACTED] SOON AND LOOK FORWARD TO YOUR \nPARTICIPATION.\nEarnings Statement\nPeriod  ending: 7/18/2008\nPay  date: 7/25/[ADDRESS_REDACTED]\nANYTOWN, USA 12345"
+  },
+  {
+    "doc_id": "sample_bank_statement",
+    "chunk_id": 0,
+    "text": "Bank Statement\nBorrower: Alex Johnson\nStatement Period: [DOB_REDACTED] - [DOB_REDACTED]\nAccount Type: Checking\nBeginning Balance: $41,280.00\nDeposits & Credits: $7,920.00\nWithdrawals & Debits: $6,410.00\nAvailable Balance: $42,790.00\nMonthly Debt: $1,850.00\nMortgage Reserve Months: 7\n"
+  },
+  {
+    "doc_id": "sample_employment_letter",
+    "chunk_id": 0,
+    "text": "Verification of Employment Letter\nEmployment Letter\nEmployee Name: Alex Johnson\nEmployer Name: Acme Lending LLC\nPosition: Senior Operations Analyst\nEmployment Start Date: [DOB_REDACTED]\nEmployment Tenure: 49 months\nGross Monthly Income: $6,800.00\nStatus: Full-time, non-probationary\n"
+  },
+  {
+    "doc_id": "sample_id_document",
+    "chunk_id": 0,
+    "text": "Government Identification Document\nPassport ID Document\nName: Alex Johnson\nDOB: [DOB_REDACTED]\nAddress: [ADDRESS_REDACTED], Austin, TX 78701\nID Number: P23874691\nIssued Country: United States\nKYC Verification: Complete\n"
+  },
+  {
+    "doc_id": "sample_loan_application",
+    "chunk_id": 0,
+    "text": "Mortgage Loan Application Summary\nBorrower: Alex Johnson\nDOB: [DOB_REDACTED]\nProperty Address: [ADDRESS_REDACTED], Austin, TX 78701\nCredit Score: 742\nLoan Amount: $420,000.00\nProperty Value: $560,000.00\nMonthly Income: $6,800.00\nMonthly Debt: $1,850.00\nEmployment Tenure: 49 months\n"
+  },
+  {
+    "doc_id": "sample_paystub",
+    "chunk_id": 0,
+    "text": "Paystub\nEmployee Name: Alex Johnson\nPay Period: [DOB_REDACTED] - [DOB_REDACTED]\nPay Date: [DOB_REDACTED]\nHourly Rate: $42.50\nGross Pay: $3,400.00\nNet Pay: $2,720.00\nYTD Gross: $6,800.00\nRouting Number: [ROUTING_REDACTED]\nAccount Number: [ACCOUNT_REDACTED]\n"
+  },
+  {
+    "doc_id": "sample_w2",
+    "chunk_id": 0,
+    "text": "Form W-2 - Wage and Tax Statement\nEmployee Name: Alex Johnson\nEmployee SSN: [SSN_REDACTED]\nEmployer Name: Acme Lending LLC\nEmployer EIN: [EIN_REDACTED]\nWages, tips, other compensation: $78,450.00\nFederal income tax withheld: $9,200.00\nSocial security wages: $78,450.00\nMedicare wages and tips: $78,450.00\n"
+  },
+  {
+    "doc_id": "W2_Interactive",
+    "chunk_id": 0,
+    "text": "Sample W-2\nTo read a brief description of a box on the W-2, move your mouse pointer over a box in the sample form.  \nImportant: The information in this sample is specific to RUN powered by ADP only and should not be used as the official  W-2. In addition \nto this sample, it\u2019s important that you use the detailed instructions for Form W-2 found here: https://www.irs.gov/pub/irs-pdf/iw2w3.pdf  \nNOTE: New for Tax Year 2020, marital status and exemptions have been removed based on the 2020 W-4 changes.\nCopyright \u00a9 2020 ADP, Inc. All rights reserved. ADP, the ADP Logo, RUN Powered by ADP,  and Always Designing for People are registered trademarks of ADP, Inc. ADP, Inc. and its affiliates do not offer investment, tax \nor legal advice to individuals. Nothing contained in this communication is inte"
+  },
+  {
+    "doc_id": "W2_Interactive",
+    "chunk_id": 1,
+    "text": "nded to be, nor should be construed as, particularized advice or a recommendation or suggestion that you take or not take a particular action. \nQuestions about how laws, regulations, guidance, your plan\u2019s provisions or services available to participants may apply to you should be directed to your plan administrator or legal, tax or financial advisor. REV 11/18/20"
+  }
+]

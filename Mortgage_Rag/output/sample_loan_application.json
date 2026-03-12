@@ -1,0 +1,15 @@
+{
+  "doc_id": "sample_loan_application",
+  "fields": {},
+  "pii_found": [
+    {
+      "label": "DOB",
+      "value": "[DOB_REDACTED]"
+    },
+    {
+      "label": "ADDRESS",
+      "value": "[ADDRESS_REDACTED]"
+    }
+  ],
+  "redacted_text": "Mortgage Loan Application Summary\nBorrower: Alex Johnson\nDOB: [DOB_REDACTED]\nProperty Address: [ADDRESS_REDACTED], Austin, TX 78701\nCredit Score: 742\nLoan Amount: $420,000.00\nProperty Value: $560,000.00\nMonthly Income: $6,800.00\nMonthly Debt: $1,850.00\nEmployment Tenure: 49 months\n"
+}

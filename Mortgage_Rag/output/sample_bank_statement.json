@@ -1,0 +1,15 @@
+{
+  "doc_id": "sample_bank_statement",
+  "fields": {},
+  "pii_found": [
+    {
+      "label": "DOB",
+      "value": "[DOB_REDACTED]"
+    },
+    {
+      "label": "DOB",
+      "value": "[DOB_REDACTED]"
+    }
+  ],
+  "redacted_text": "Bank Statement\nBorrower: Alex Johnson\nStatement Period: [DOB_REDACTED] - [DOB_REDACTED]\nAccount Type: Checking\nBeginning Balance: $41,280.00\nDeposits & Credits: $7,920.00\nWithdrawals & Debits: $6,410.00\nAvailable Balance: $42,790.00\nMonthly Debt: $1,850.00\nMortgage Reserve Months: 7\n"
+}

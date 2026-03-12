@@ -205,7 +205,7 @@ Get-Content .env
 1. ✅ Complete this 5-minute guide
 2. 📖 Read [USER_GUIDE.md](USER_GUIDE.md) for comprehensive walkthrough
 3. 📸 Follow [SCREENSHOT_GUIDE.md](SCREENSHOT_GUIDE.md) to document
-4. 🧪 Run tests: `python test_guardrails.py`
+4. 🧪 Run tests: `python unit-testing/test_guardrails.py`
 5. 🚀 Deploy to production (optional)
 
 ---

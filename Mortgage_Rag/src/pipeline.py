@@ -2,7 +2,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 import json
+from langchain_core.documents import Document
+from langchain_community.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
 
 from .config import Settings
 from .extract import extract_text_from_pdf, extract_fields
@@ -10,6 +14,7 @@ from .pii import redact_pii, detect_pii
 from .embedding import chunk_text, EmbeddingItem, build_faiss_index
 from .llm import LlmClient
 from .logger import get_logger
+from .underwriting_agents import run_underwriting_workflow
 
 logger = get_logger(__name__)
 
@@ -21,6 +26,16 @@ class ProcessedDocument:
     redacted_text: str
     fields: dict[str, str]
     pii_found: list[dict[str, str]]
+
+
+def _redact_structure(value: Any) -> Any:
+    if isinstance(value, str):
+        return redact_pii(value)
+    if isinstance(value, list):
+        return [_redact_structure(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _redact_structure(item) for key, item in value.items()}
+    return value
 
 
 def process_document(path: Path) -> ProcessedDocument:
@@ -65,10 +80,13 @@ def run_pipeline(settings: Settings) -> None:
         logger.warning("No OpenAI API key found, skipping embeddings")
 
     embeddings: list[EmbeddingItem] = []
+    processed_documents: list[ProcessedDocument] = []
+    policy_documents: list[Document] = []
 
     for idx, path in enumerate(pdf_paths, start=1):
         logger.info(f"Processing document {idx}/{len(pdf_paths)}: {path.name}")
         processed = process_document(path)
+        processed_documents.append(processed)
         output_path = settings.output_dir / f"{processed.doc_id}.json"
         output_path.write_text(
             json.dumps(
@@ -104,6 +122,11 @@ def run_pipeline(settings: Settings) -> None:
                     )
                 )
 
+        for chunk_idx, chunk in enumerate(chunks):
+            policy_documents.append(
+                Document(page_content=chunk, metadata={"source": path.name, "chunk": chunk_idx})
+            )
+
     if embeddings:
         logger.info(f"Building FAISS index with {len(embeddings)} embeddings")
         build_faiss_index(embeddings, settings.faiss_dir)
@@ -111,21 +134,37 @@ def run_pipeline(settings: Settings) -> None:
     else:
         logger.warning("No embeddings generated, skipping FAISS index creation")
 
-    if llm:
-        logger.info("Generating pipeline summary using LLM")
-        safe_summary = llm.safe_chat(
-            system_prompt=(
-                "You are an underwriting assistant. Summarize the sanitized document "
-                "content into key underwriting-relevant facts."
-            ),
-            user_prompt=(
-                "Summarize the following sanitized text:\n" + embeddings[0].text
-                if embeddings
-                else "No content"
-            ),
+    policy_vector_store = None
+    if settings.openai_api_key and policy_documents:
+        logger.info("Building policy vector store for underwriting citations")
+        policy_embeddings = OpenAIEmbeddings(model=settings.openai_embed_model, api_key=settings.openai_api_key)
+        policy_vector_store = FAISS.from_documents(documents=policy_documents, embedding=policy_embeddings)
+
+    if processed_documents:
+        logger.info("Generating compliance-first underwriting recommendation")
+        underwriting_result = run_underwriting_workflow(
+            query="Batch underwriting assessment",
+            borrower_documents=[
+                {"name": f"{item.doc_id}.pdf", "text": item.text}
+                for item in processed_documents
+            ],
+            policy_vector_store=policy_vector_store,
+            thresholds={
+                "min_credit_score": settings.min_credit_score,
+                "max_dti": settings.max_dti,
+                "max_ltv": settings.max_ltv,
+                "min_employment_months": settings.min_employment_months,
+            },
         )
+
         summary_path = settings.output_dir / "summary.txt"
-        summary_path.write_text(safe_summary, encoding="utf-8")
+        summary_path.write_text(redact_pii(underwriting_result.summary_markdown), encoding="utf-8")
         logger.info(f"Summary saved to {summary_path}")
+
+        recommendation_path = settings.output_dir / "underwriting_recommendation.json"
+        recommendation_path.write_text(
+            json.dumps(_redact_structure(underwriting_result.output), indent=2), encoding="utf-8"
+        )
+        logger.info(f"Underwriting recommendation saved to {recommendation_path}")
     
     logger.info("Pipeline completed successfully")

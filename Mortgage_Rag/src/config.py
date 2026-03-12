@@ -18,6 +18,10 @@ class Settings:
     openai_embed_model: str
     chunk_size: int
     chunk_overlap: int
+    min_credit_score: float
+    max_dti: float
+    max_ltv: float
+    min_employment_months: float
 
 
 def load_settings() -> Settings:
@@ -25,7 +29,15 @@ def load_settings() -> Settings:
     base_dir = Path(os.getenv("MORTGAGE_RAG_BASE", Path.cwd()))
     data_dir = Path(os.getenv("MORTGAGE_RAG_DATA", base_dir / "data"))
     output_dir = Path(os.getenv("MORTGAGE_RAG_OUTPUT", base_dir / "output"))
-    faiss_dir = Path(os.getenv("MORTGAGE_RAG_FAISS", base_dir / "faiss"))
+    configured_faiss_dir = os.getenv("MORTGAGE_RAG_FAISS")
+    default_faiss_dir = base_dir / "vectordb" / "faiss"
+    legacy_faiss_dir = base_dir / "faiss"
+    if configured_faiss_dir:
+        faiss_dir = Path(configured_faiss_dir)
+    elif legacy_faiss_dir.exists() and not default_faiss_dir.exists():
+        faiss_dir = legacy_faiss_dir
+    else:
+        faiss_dir = default_faiss_dir
     
     has_api_key = bool(os.getenv("OPENAI_API_KEY"))
     logger.info(f"Configuration loaded: data_dir={data_dir}, openai_key_present={has_api_key}")
@@ -39,4 +51,8 @@ def load_settings() -> Settings:
         openai_embed_model=os.getenv("OPENAI_EMBED_MODEL", "text-embedding-3-small"),
         chunk_size=int(os.getenv("MORTGAGE_RAG_CHUNK", "800")),
         chunk_overlap=int(os.getenv("MORTGAGE_RAG_CHUNK_OVERLAP", "120")),
+        min_credit_score=float(os.getenv("MORTGAGE_MIN_CREDIT_SCORE", "620")),
+        max_dti=float(os.getenv("MORTGAGE_MAX_DTI", "43")),
+        max_ltv=float(os.getenv("MORTGAGE_MAX_LTV", "80")),
+        min_employment_months=float(os.getenv("MORTGAGE_MIN_EMPLOYMENT_MONTHS", "24")),
     )

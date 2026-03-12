@@ -95,7 +95,7 @@ Write-Host "3. Open screenshots folder:" -ForegroundColor White
 Write-Host "   explorer screenshots\raw" -ForegroundColor Gray
 Write-Host ""
 Write-Host "4. View guide:" -ForegroundColor White
-Write-Host "   code SCREENSHOT_GUIDE.md" -ForegroundColor Gray
+Write-Host "   code docs/SCREENSHOT_GUIDE.md" -ForegroundColor Gray
 Write-Host ""
 
 # Offer to open screenshots folder
@@ -110,7 +110,7 @@ if ($response -eq "Y" -or $response -eq "y") {
 Write-Host ""
 Write-Host "🎯 Next Steps:" -ForegroundColor Cyan
 Write-Host "1. Launch app: streamlit run app.py" -ForegroundColor White
-Write-Host "2. Follow SCREENSHOT_GUIDE.md for capture instructions" -ForegroundColor White
+Write-Host "2. Follow docs/SCREENSHOT_GUIDE.md for capture instructions" -ForegroundColor White
 Write-Host "3. Save screenshots to screenshots/raw/ folder" -ForegroundColor White
 Write-Host "4. Run this script again to check progress" -ForegroundColor White
 Write-Host ""

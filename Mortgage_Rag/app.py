@@ -7,7 +7,6 @@ from typing import Iterable
 from pypdf import PdfReader
 import streamlit as st
 from dotenv import load_dotenv
-from openai import OpenAI
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 from langchain_community.vectorstores import FAISS
@@ -17,6 +16,7 @@ from src.config import load_settings
 from src.pii import redact_pii, detect_pii
 from src.guardrails import apply_input_guardrails, apply_output_guardrails
 from src.logger import get_logger
+from src.underwriting_agents import run_underwriting_workflow
 
 # Initialize logger
 logger = get_logger(__name__)
@@ -75,63 +75,6 @@ def build_vector_store(docs: Iterable[UploadedDoc], chunk_size: int, chunk_overl
         raise
 
 
-def generate_summary_with_llm(query: str, search_results: list[tuple], api_key: str) -> str:
-    """Generate a summary of search results using OpenAI LLM"""
-    logger.info(f"Generating LLM summary: query='{query}', results_count={len(search_results)}")
-    
-    if not search_results:
-        logger.warning("No search results provided to LLM")
-        return "I couldn't find any relevant information in the uploaded documents to answer your question."
-    
-    # Prepare context from search results
-    context_parts = []
-    for idx, (doc, sanitized_text, score) in enumerate(search_results, start=1):
-        source = doc.metadata.get('source', 'Unknown')
-        context_parts.append(f"[Source: {source}]\n{sanitized_text}")
-    
-    context = "\n\n".join(context_parts)
-    
-    # Create prompt for LLM
-    system_prompt = """You are a helpful mortgage document assistant. Your role is to answer questions about mortgage documents accurately and concisely based ONLY on the provided context.
-
-Rules:
-- Only use information from the provided context
-- Be specific and cite sources when possible
-- If the context doesn't contain enough information to answer fully, say so
-- Keep answers concise and professional
-- Never make up information
-- All PII (SSNs, emails, phone numbers, etc.) has been redacted for privacy
-- NEVER include actual PII values in your response - refer to them as "[REDACTED]" if needed
-- When discussing personal information, use generic terms like "the borrower's SSN is redacted" instead of actual values"""
-
-    user_prompt = f"""Question: {query}
-
-Context from mortgage documents:
-{context}
-
-Please provide a clear, concise answer based on the context above."""
-    
-    # Call OpenAI API
-    try:
-        logger.info("Calling OpenAI API for chat completion")
-        client = OpenAI(api_key=api_key)
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ],
-            temperature=0.3,
-            max_tokens=500
-        )
-        result = response.choices[0].message.content
-        logger.info(f"LLM response generated: {len(result)} characters")
-        return result
-    except Exception as e:
-        logger.error(f"Error generating LLM response: {e}", exc_info=True)
-        return f"Error generating response: {str(e)}"
-
-
 st.set_page_config(page_title="SecureMortgageAI", page_icon="🔒", layout="wide")
 logger.info("=" * 80)
 logger.info("Application started: SecureMortgageAI")
@@ -141,6 +84,9 @@ logger.info(f"Settings loaded: chunk_size={settings.chunk_size}, chunk_overlap={
 
 st.title("🔒 SecureMortgageAI")
 st.caption("AI-powered mortgage document assistant with PII protection and security guardrails")
+st.info(
+    "Decision support mode: this system proposes Approve/Refer/Decline recommendations with rationale and policy citations. Final credit decisions are always made by a human underwriter."
+)
 
 with st.sidebar:
     st.header("📁 Document Upload")
@@ -322,21 +268,36 @@ if query:
                     with st.chat_message("assistant"):
                         st.markdown(response_msg)
                 else:
-                    # Generate summary using LLM
-                    logger.info("Generating LLM summary with valid results")
+                    # Generate structured underwriting recommendation
+                    logger.info("Running underwriting workflow")
                     with st.spinner("✨ Generating response..."):
-                        summary = generate_summary_with_llm(query, valid_results, settings.openai_api_key)
-                        # CRITICAL: Redact any PII from LLM response for safety
-                        logger.info("Applying final PII redaction to LLM response")
-                        summary = redact_pii(summary)
+                        borrower_payload = [
+                            {"name": document.name, "text": document.text}
+                            for document in uploaded_docs
+                        ]
+                        underwriting_result = run_underwriting_workflow(
+                            query=query,
+                            borrower_documents=borrower_payload,
+                            policy_vector_store=vector_store,
+                            thresholds={
+                                "min_credit_score": settings.min_credit_score,
+                                "max_dti": settings.max_dti,
+                                "max_ltv": settings.max_ltv,
+                                "min_employment_months": settings.min_employment_months,
+                            },
+                        )
+                        summary = redact_pii(underwriting_result.summary_markdown)
                     
                     # Prepare sources list
                     sources = []
-                    for doc, _, score in valid_results:
-                        source_name = doc.metadata.get('source', 'Unknown')
-                        chunk_num = doc.metadata.get('chunk', 'N/A')
-                        relevance = max(0, min(100, int((1 - score/2) * 100)))
-                        sources.append(f"{source_name} (Chunk {chunk_num}) - {relevance}% relevant")
+                    for citation in underwriting_result.output.get("policy_citations", []):
+                        source_name = citation.get("source", "Unknown")
+                        section = citation.get("section", "N/A")
+                        score = citation.get("score", "N/A")
+                        sources.append(f"{source_name} (Section {section}) - score {score}")
+
+                    if not sources:
+                        sources = ["MISSING policy citations - refer to human underwriter for manual policy validation"]
                     
                     logger.info(f"Response generated successfully with {len(sources)} sources")
                     # Combine warning (if any) with summary

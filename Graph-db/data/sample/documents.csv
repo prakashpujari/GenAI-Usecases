@@ -1,0 +1,4 @@
+documentId,loanId,type,sourceSystem,uploadedAt
+D001,L001,paystub,doc-mgmt,2026-01-11T09:00:00
+D002,L002,bank_statement,doc-mgmt,2026-01-14T10:30:00
+D003,L003,id_proof,doc-mgmt,2026-02-03T11:00:00

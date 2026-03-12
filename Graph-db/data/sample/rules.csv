@@ -1,0 +1,3 @@
+ruleId,name,description,ruleType,severity,regId
+R001,LTV Threshold,LTV must be <= 80,LTV_MAX,HIGH,REG001
+R002,DTI Threshold,DTI must be <= 43,DTI_MAX,MEDIUM,REG002

@@ -1,0 +1,4 @@
+incomeId,borrowerId,type,employerName,annualIncome,startDate
+I001,B001,w2,Fabrikam,125000,2019-04-01
+I002,B002,w2,Contoso,145000,2018-06-01
+I003,B003,1099,Self Employed,130000,2020-01-01

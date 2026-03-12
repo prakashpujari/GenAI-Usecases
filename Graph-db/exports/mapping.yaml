@@ -1,0 +1,9 @@
+labels:
+  Borrower: Borrower
+  MortgageLoan: Loan
+  Property: Property
+properties:
+  Loan:
+  - amount
+relationships:
+  appliesFor: APPLIES_FOR

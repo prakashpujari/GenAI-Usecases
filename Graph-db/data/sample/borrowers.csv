@@ -1,0 +1,4 @@
+borrowerId,name,ssnHash,dob
+B001,Jane Doe,hash-001,1988-06-01
+B002,John Smith,hash-002,1985-10-13
+B003,Maria Gomez,hash-003,1990-09-22

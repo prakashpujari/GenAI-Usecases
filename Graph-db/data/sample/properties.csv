@@ -1,0 +1,4 @@
+propertyId,address,city,state,zip,type
+P001,10 River Rd,Austin,TX,73301,single_family
+P002,55 Park Ave,Dallas,TX,75201,condo
+P003,99 Lake Dr,Houston,TX,77001,duplex

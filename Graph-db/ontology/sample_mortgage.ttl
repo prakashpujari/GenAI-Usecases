@@ -1,0 +1,14 @@
+@prefix ex: <http://example.com/mortgage#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:MortgageLoan a owl:Class .
+ex:Borrower a owl:Class .
+ex:Property a owl:Class .
+
+ex:appliesFor a owl:ObjectProperty ;
+  rdfs:domain ex:Borrower ;
+  rdfs:range ex:MortgageLoan .
+
+ex:loanAmount a owl:DatatypeProperty ;
+  rdfs:domain ex:MortgageLoan .

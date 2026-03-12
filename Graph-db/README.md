@@ -237,37 +237,9 @@ Fix: set `JAVA_HOME` to Java 17 before running Neo4j commands.
 
 If `docker compose up` fails with Docker engine pipe errors, start Docker Desktop or use the local native Neo4j path documented above.
 
-## Demo Media Placeholder
-
-Use this section for visual walkthrough assets.
-
-### Neo4j Browser Screenshot
-
-Place the screenshot file at `docs/assets/neo4j-browser-graph.png`, then this image will render in README:
-
-```md
-![Neo4j Browser Graph Screenshot](docs/assets/neo4j-browser-graph.png)
-```
-
-![Neo4j Browser Graph Screenshot](docs/assets/neo4j-browser-graph.png)
-
-### Animated GIF
-
-Place the GIF file at `docs/assets/MortgageGRAPH-Neo4j.gif`, then this image will render in README:
-
-```md
-![Mortgage Graph UI Demo](docs/assets/MortgageGRAPH-Neo4j.gif)
-```
+## Demo Media
 
 ![Mortgage Graph UI Demo](docs/assets/MortgageGRAPH-Neo4j.gif)
-
-Suggested GIF content:
-
-1. Start API health check
-2. Ingest a sample loan
-3. Open Graph Explorer tab in Streamlit
-4. Run a graph query and show rendered relationships
-5. Open Neo4j Browser and run `RETURN p` query
 
 ### Optional: Local Postgres Ingest Mode
 

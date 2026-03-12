@@ -254,7 +254,7 @@ Place the screenshot file at `docs/assets/neo4j-browser-graph.png`, then this im
 Place the GIF file at `docs/assets/MortgargeGRAPH-Neo4j.gif`, then this image will render in README:
 
 ```md
-![Mortgage Graph UI Demo](docs/assets/MortgargeGRAPH-Neo4j.gif)
+![Mortgage Graph UI Demo](Graph-db/docs/assets/MortgargeGRAPH-Neo4j.gif)
 ```
 
 Suggested GIF content:

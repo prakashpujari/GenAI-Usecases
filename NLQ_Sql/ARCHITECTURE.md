@@ -1,5 +1,7 @@
 # Mortgage Insights NLQ Architecture
 
+![Mortgage Insights NLQ Architecture](nlq_sql/Images/Mortgage+Insights+NLQ+Architecture.png)
+
 ```mermaid
 flowchart TD
     A[User (Streamlit UI)] -->|NLQ| B[NLQ Pipeline]

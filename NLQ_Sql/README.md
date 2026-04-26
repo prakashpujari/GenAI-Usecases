@@ -1,6 +1,8 @@
 ---
 # Mortgage Insights NLQ
 
+![Mortgage Insights NLQ Architecture](nlq_sql/Images/Mortgage+Insights+NLQ+Architecture.png)
+
 > **Production-grade Natural Language to SQL for Mortgage Data**
 
 ## Features

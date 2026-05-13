@@ -60,6 +60,172 @@ A multi-turn AI chatbot with a React UI and terminal CLI, powered by Claude (Ant
 
 ---
 
+## UI Preview
+
+### React Web UI (http://localhost:5173)
+
+```
++--------------------------------------------------------------+
+|  Joshitha's chatbot   [openai] gpt-4o           [  Reset  ] |
++--------------------------------------------------------------+
+|                                                              |
+|                                                              |
+|          Send a message to start chatting.                   |
+|                                                              |
+|                                                              |
+|        +----------------------------------------------+      |
+|        |  Hello! I can help you with:                 |      |
+|        |   - Writing and editing                      |      |
+|        |   - Coding and debugging                     |      |
+|        |   - Math and analysis                        |      |
+|        |   - General knowledge questions              |      |
+|        |  What would you like to explore?             |      |
+|        +----------------------------------------------+      |
+|        in: 78  out: 93  --  turn 1                          |
+|                                                              |
+|                   [What is 12 * 8?               ]          |
+|                                                              |
+|        +----------------------------------------------+      |
+|        |  12 * 8 = 96                                |      |
+|        +----------------------------------------------+      |
+|        in: 142  out: 9  --  turn 2                          |
+|                                                              |
+|                   [Explain it step by step       ]          |
+|                                                              |
+|        +----------------------------------------------+      |
+|        |  Sure! 12 * 8 means adding 12 eight times:  |      |
+|        |  12 + 12 = 24  (x2)                         |      |
+|        |  24 + 24 = 48  (x4)                         |      |
+|        |  48 + 48 = 96  (x8)                         |      |
+|        +----------------------------------------------+      |
+|        in: 187  out: 55  --  turn 3                         |
+|                                                              |
++--------------------------------------------------------------+
+| Type a message... (Enter to send, Shift+Enter for newline)   |
+|                                               [   Send   ]   |
++--------------------------------------------------------------+
+```
+
+**UI elements explained:**
+
+| Element | Location | Description |
+|---------|----------|-------------|
+| `[openai]` badge | Top-left | Active provider — green teal pill |
+| `gpt-4o` | Header | Active model name |
+| `[Reset]` | Top-right | Clears conversation history |
+| Right-aligned bubbles | Messages area | Your messages (teal gradient) |
+| Left-aligned bubbles | Messages area | AI replies (warm cream) |
+| `in: / out:` footer | Below AI bubble | Token usage per reply |
+| Loading dots | Messages area | Three animated dots while AI is thinking |
+
+---
+
+### Terminal CLI
+
+```
++------------------------------------------+
+|          Joshitha's chatbot              |
+|   Provider: openai  Model: gpt-4o        |
+|   Type /help for available commands      |
++------------------------------------------+
+
+You: Hello, what can you help me with?
+
+Joshitha's chatbot: I can assist you with a wide range of tasks including
+coding, writing, math, analysis, and general knowledge questions.
+
+[turn 1 | in:78  out:64]
+
+You: Write a Python function to check if a number is prime
+
+Joshitha's chatbot: def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+[turn 2 | in:156  out:58]
+
+You: reset
+-- Conversation reset --
+
+You: quit
+Goodbye!
+```
+
+---
+
+## Example Conversations
+
+### 1. General Knowledge
+
+**You:** What is the difference between RAM and ROM?
+
+**AI:** RAM (Random Access Memory) is temporary storage — it holds data the
+computer is actively using and is cleared when powered off. ROM (Read-Only
+Memory) is permanent storage that retains data even without power, typically
+used to store firmware like the BIOS.
+
+---
+
+### 2. Coding Help
+
+**You:** Write a Python function to reverse a string.
+
+**AI:**
+```python
+def reverse_string(s: str) -> str:
+    return s[::-1]
+
+# Example
+print(reverse_string("hello"))  # "olleh"
+```
+
+**You:** Now make it handle None input safely.
+
+**AI:**
+```python
+def reverse_string(s: str | None) -> str:
+    if s is None:
+        return ""
+    return s[::-1]
+```
+
+> Multi-turn context: the AI remembered your first function and improved it.
+
+---
+
+### 3. Writing Help
+
+**You:** Write a one-line bio for a software engineer named Alex.
+
+**AI:** Alex is a software engineer passionate about building scalable systems
+and turning complex problems into elegant solutions.
+
+---
+
+### 4. Math & Analysis
+
+**You:** I have 3 apples and buy 2 bags of 6 apples each. How many do I have?
+
+**AI:** You start with 3 apples, then buy 2 × 6 = 12 more. Total: 3 + 12 = **15 apples**.
+
+---
+
+### 5. Reset and Start Fresh
+
+**You:** reset
+
+```
+-- Conversation reset --
+```
+
+The AI now has no memory of previous messages — useful when switching topics.
+
+---
+
 ## Prerequisites
 
 | Tool | Version | Check |

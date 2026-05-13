@@ -62,57 +62,43 @@ A multi-turn AI chatbot with a React UI and terminal CLI, powered by Claude (Ant
 
 ## UI Preview
 
-### React Web UI (http://localhost:5173)
+### Welcome Screen
+![Welcome screen](screenshots/01-welcome.png)
 
-```
-+--------------------------------------------------------------+
-|  Joshitha's chatbot   [openai] gpt-4o           [  Reset  ] |
-+--------------------------------------------------------------+
-|                                                              |
-|                                                              |
-|          Send a message to start chatting.                   |
-|                                                              |
-|                                                              |
-|        +----------------------------------------------+      |
-|        |  Hello! I can help you with:                 |      |
-|        |   - Writing and editing                      |      |
-|        |   - Coding and debugging                     |      |
-|        |   - Math and analysis                        |      |
-|        |   - General knowledge questions              |      |
-|        |  What would you like to explore?             |      |
-|        +----------------------------------------------+      |
-|        in: 78  out: 93  --  turn 1                          |
-|                                                              |
-|                   [What is 12 * 8?               ]          |
-|                                                              |
-|        +----------------------------------------------+      |
-|        |  12 * 8 = 96                                |      |
-|        +----------------------------------------------+      |
-|        in: 142  out: 9  --  turn 2                          |
-|                                                              |
-|                   [Explain it step by step       ]          |
-|                                                              |
-|        +----------------------------------------------+      |
-|        |  Sure! 12 * 8 means adding 12 eight times:  |      |
-|        |  12 + 12 = 24  (x2)                         |      |
-|        |  24 + 24 = 48  (x4)                         |      |
-|        |  48 + 48 = 96  (x8)                         |      |
-|        +----------------------------------------------+      |
-|        in: 187  out: 55  --  turn 3                         |
-|                                                              |
-+--------------------------------------------------------------+
-| Type a message... (Enter to send, Shift+Enter for newline)   |
-|                                               [   Send   ]   |
-+--------------------------------------------------------------+
-```
+---
+
+### Typing a Message
+![Typing a message](screenshots/02-typing.png)
+
+---
+
+### First Reply
+![First reply from AI](screenshots/03-first-reply.png)
+
+---
+
+### Loading State
+![Loading dots while AI is thinking](screenshots/04-loading.png)
+
+---
+
+### Multi-turn Conversation
+![Multi-turn conversation with code example](screenshots/05-conversation.png)
+
+---
+
+### After Reset
+![Chat cleared after reset](screenshots/06-after-reset.png)
+
+---
 
 **UI elements explained:**
 
 | Element | Location | Description |
 |---------|----------|-------------|
-| `[openai]` badge | Top-left | Active provider — green teal pill |
-| `gpt-4o` | Header | Active model name |
-| `[Reset]` | Top-right | Clears conversation history |
+| Provider badge | Header left | Active provider — teal pill (openai / anthropic) |
+| Model name | Header | Active model (gpt-4o / claude-sonnet-4-6) |
+| `Reset` button | Header right | Clears conversation history |
 | Right-aligned bubbles | Messages area | Your messages (teal gradient) |
 | Left-aligned bubbles | Messages area | AI replies (warm cream) |
 | `in: / out:` footer | Below AI bubble | Token usage per reply |

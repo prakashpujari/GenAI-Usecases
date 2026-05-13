@@ -1,0 +1,35 @@
+{
+  "doc_id": "sample_paystub",
+  "fields": {
+    "employee_name": "Alex Johnson",
+    "pay_period": "[DOB_REDACTED] - [DOB_REDACTED]",
+    "pay_date": "[DOB_REDACTED]",
+    "gross_pay": "3,400.00",
+    "net_pay": "2,720.00",
+    "ytd_gross": "6,800.00",
+    "hourly_rate": "42.50"
+  },
+  "pii_found": [
+    {
+      "label": "DOB",
+      "value": "[DOB_REDACTED]"
+    },
+    {
+      "label": "DOB",
+      "value": "[DOB_REDACTED]"
+    },
+    {
+      "label": "DOB",
+      "value": "[DOB_REDACTED]"
+    },
+    {
+      "label": "ROUTING",
+      "value": "[ROUTING_REDACTED]"
+    },
+    {
+      "label": "ACCOUNT",
+      "value": "[ACCOUNT_REDACTED]"
+    }
+  ],
+  "redacted_text": "Paystub\nEmployee Name: Alex Johnson\nPay Period: [DOB_REDACTED] - [DOB_REDACTED]\nPay Date: [DOB_REDACTED]\nHourly Rate: $42.50\nGross Pay: $3,400.00\nNet Pay: $2,720.00\nYTD Gross: $6,800.00\nRouting Number: [ROUTING_REDACTED]\nAccount Number: [ACCOUNT_REDACTED]\n"
+}

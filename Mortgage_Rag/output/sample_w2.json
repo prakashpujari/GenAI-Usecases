@@ -1,0 +1,18 @@
+{
+  "doc_id": "sample_w2",
+  "fields": {
+    "employee_name": "Alex Johnson",
+    "employer_name": "Acme Lending LLC"
+  },
+  "pii_found": [
+    {
+      "label": "SSN",
+      "value": "[SSN_REDACTED]"
+    },
+    {
+      "label": "EIN",
+      "value": "[EIN_REDACTED]"
+    }
+  ],
+  "redacted_text": "Form W-2 - Wage and Tax Statement\nEmployee Name: Alex Johnson\nEmployee SSN: [SSN_REDACTED]\nEmployer Name: Acme Lending LLC\nEmployer EIN: [EIN_REDACTED]\nWages, tips, other compensation: $78,450.00\nFederal income tax withheld: $9,200.00\nSocial security wages: $78,450.00\nMedicare wages and tips: $78,450.00\n"
+}

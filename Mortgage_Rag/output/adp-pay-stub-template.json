@@ -1,0 +1,45 @@
+{
+  "doc_id": "adp-pay-stub-template",
+  "fields": {
+    "pay_date": "7/25/2008"
+  },
+  "pii_found": [
+    {
+      "label": "SSN",
+      "value": "[SSN_REDACTED]"
+    },
+    {
+      "label": "SSN",
+      "value": "[SSN_REDACTED]"
+    },
+    {
+      "label": "PHONE",
+      "value": "[PHONE_REDACTED]"
+    },
+    {
+      "label": "ACCOUNT",
+      "value": "[PHONE_REDACTED]"
+    },
+    {
+      "label": "ADDRESS",
+      "value": "[ADDRESS_REDACTED]"
+    },
+    {
+      "label": "ADDRESS",
+      "value": "[ADDRESS_REDACTED]"
+    },
+    {
+      "label": "ADDRESS",
+      "value": "[ADDRESS_REDACTED]"
+    },
+    {
+      "label": "ADDRESS",
+      "value": "[ADDRESS_REDACTED]"
+    },
+    {
+      "label": "ADDRESS",
+      "value": "[ADDRESS_REDACTED]"
+    }
+  ],
+  "redacted_text": "SAMPLE\nTEAR HERE                      \u00a92008, 2001, 2000, 1999 ADP, Inc.\n\u25b2\nTHE ORIGINAL DOCUMENT HAS A REFLECTIVE WATERMARK ON THE BACK.THE ORIGINAL DOCUMENT HAS A REFLECTIVE WATERMARK ON THE BACK. HOLD AT AN ANGLE TO VIEW WHEN CHECKING THE ENDORSEMENT.HOLD AT AN ANGLE TO VIEW WHEN CHECKING THE ENDORSEMENT.\nE01382723\nCO. FILE DEPT. CLOCK NUMBER\nABC 126543 123456 12345 00000000      1\nSocial Security Number: [SSN_REDACTED]\nTaxable Marital Status: Married\nExemptions/Allowances:\nFederal: 3, $25  Additional  Tax\nState: 2\nLocal: [ADDRESS_REDACTED]\nANYTOWN, USA 10101\nSAMPLE \nNON-NEGOTIABLE\nVOID VOID VOID\nACME SUPPLIES CORP. Payroll  check  number: [PHONE_REDACTED]\n[ADDRESS_REDACTED] Pay  date: 7/25/2008\nANYTOWN,  USA  10101 Social  Security  No. [SSN_REDACTED]\nPay  to  the\norder of:JANE  HARPER\nThis  amount: TWO  HUNDRED  NINETY-ONE  AND  90/100  DOLLARS $291.[ADDRESS_REDACTED]  ADDRESS AUTHORIZED  SIGNATURE\nCITY  STATE  ZIP VOID  AFTER  90 DAYS\n/symbol3001379/symbol3 /symbol1122000496/symbol14040110157/symbol3\nEarnings rate hours this period year to date\nRegular 10.00 32.00 320.00 16,640.00\nOvertime 15.00 1.00 15.00 780.00\nHoliday 10.00 8.00 80.00 4,160.00\nTuition37.43* 1,946.80\nGross Pay $  452.43 23,526.80\nDeductions Statutory\nFederal Income Tax - 40.60 2,111.20\nSocial Security Tax - 28.05 1,458.60\nMedicare Tax - 6.56 341.12\nNY State Income Tax - 8.43 438.36\nNYC Income Tax - 5.94 308.88\nNY SUI/SDI Tax - 0.60 31.20\nOther\nBond - 5.00 100.00\n401(k) - 28.85* 1,500.20\nStock Plan -15.00    150.00\nLife Insurance - 5.00  50.00\nLoan - 30.00 150.00\nAdjustment\nLife Insurance + 13.50\nNet Pay $ 291.90\n* Excluded  from  federal  taxable  wages\nYour  federal  wages  this  period  are  $386.15\nOther Benefits and\nInformationthis period total to date\nGroup Term Life 0.51 27.00\nLoan Amt Paid 840.00\nVac  Hrs40.00\nSick Hrs 16.00\nTitle Operator\nImportant  Notes\nEFFECTIVE THIS PAY PERIOD YOUR REGULAR \nHOURLY RATE HAS BEEN CHANGED FROM $8.00 \nTO $10.[ADDRESS_REDACTED] SOON AND LOOK FORWARD TO YOUR \nPARTICIPATION.\nEarnings Statement\nPeriod  ending: 7/18/2008\nPay  date: 7/25/[ADDRESS_REDACTED]\nANYTOWN, USA 12345"
+}

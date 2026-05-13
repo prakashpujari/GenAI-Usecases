@@ -1,0 +1,14 @@
+{
+  "doc_id": "sample_employment_letter",
+  "fields": {
+    "employee_name": "Alex Johnson",
+    "employer_name": "Acme Lending LLC"
+  },
+  "pii_found": [
+    {
+      "label": "DOB",
+      "value": "[DOB_REDACTED]"
+    }
+  ],
+  "redacted_text": "Verification of Employment Letter\nEmployment Letter\nEmployee Name: Alex Johnson\nEmployer Name: Acme Lending LLC\nPosition: Senior Operations Analyst\nEmployment Start Date: [DOB_REDACTED]\nEmployment Tenure: 49 months\nGross Monthly Income: $6,800.00\nStatus: Full-time, non-probationary\n"
+}

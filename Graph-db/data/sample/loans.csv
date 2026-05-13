@@ -1,0 +1,4 @@
+loanId,borrowerId,propertyId,amount,status,purpose,originationDate,ltv,dti
+L001,B001,P001,350000,submitted,purchase,2026-01-10,72,35
+L002,B002,P002,525000,approved,refinance,2026-01-13,81,45
+L003,B003,P003,430000,submitted,purchase,2026-02-01,76,40

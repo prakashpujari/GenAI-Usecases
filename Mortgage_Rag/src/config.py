@@ -1,0 +1,58 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+from pathlib import Path
+import os
+from .logger import get_logger
+
+logger = get_logger(__name__)
+
+
+@dataclass(frozen=True)
+class Settings:
+    data_dir: Path
+    output_dir: Path
+    faiss_dir: Path
+    openai_api_key: str | None
+    openai_model: str
+    openai_embed_model: str
+    chunk_size: int
+    chunk_overlap: int
+    min_credit_score: float
+    max_dti: float
+    max_ltv: float
+    min_employment_months: float
+
+
+def load_settings() -> Settings:
+    logger.info("Loading application settings")
+    base_dir = Path(os.getenv("MORTGAGE_RAG_BASE", Path.cwd()))
+    data_dir = Path(os.getenv("MORTGAGE_RAG_DATA", base_dir / "data"))
+    output_dir = Path(os.getenv("MORTGAGE_RAG_OUTPUT", base_dir / "output"))
+    configured_faiss_dir = os.getenv("MORTGAGE_RAG_FAISS")
+    default_faiss_dir = base_dir / "vectordb" / "faiss"
+    legacy_faiss_dir = base_dir / "faiss"
+    if configured_faiss_dir:
+        faiss_dir = Path(configured_faiss_dir)
+    elif legacy_faiss_dir.exists() and not default_faiss_dir.exists():
+        faiss_dir = legacy_faiss_dir
+    else:
+        faiss_dir = default_faiss_dir
+    
+    has_api_key = bool(os.getenv("OPENAI_API_KEY"))
+    logger.info(f"Configuration loaded: data_dir={data_dir}, openai_key_present={has_api_key}")
+
+    return Settings(
+        data_dir=data_dir,
+        output_dir=output_dir,
+        faiss_dir=faiss_dir,
+        openai_api_key=os.getenv("OPENAI_API_KEY"),
+        openai_model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+        openai_embed_model=os.getenv("OPENAI_EMBED_MODEL", "text-embedding-3-small"),
+        chunk_size=int(os.getenv("MORTGAGE_RAG_CHUNK", "800")),
+        chunk_overlap=int(os.getenv("MORTGAGE_RAG_CHUNK_OVERLAP", "120")),
+        min_credit_score=float(os.getenv("MORTGAGE_MIN_CREDIT_SCORE", "620")),
+        max_dti=float(os.getenv("MORTGAGE_MAX_DTI", "43")),
+        max_ltv=float(os.getenv("MORTGAGE_MAX_LTV", "80")),
+        min_employment_months=float(os.getenv("MORTGAGE_MIN_EMPLOYMENT_MONTHS", "24")),
+    )

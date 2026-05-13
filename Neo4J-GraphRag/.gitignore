@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Environment variables
+.env
+.env.*
+
+# Neo4j local files
+logs/
+debug.log
+
+# Byte-compiled / cache
+*.egg-info/
+*.eggs/
+pip-wheel-metadata/
+
+# Test artifacts
+.pytest_cache/
+
+# Misc
+node_modules/
+npm-debug.log

@@ -1,0 +1,80 @@
+{
+  "decision": "Approve (recommendation only; requires human underwriter approval)",
+  "profile": {
+    "borrower_name": "Alex Johnson",
+    "dob": "[DOB_REDACTED]",
+    "address": "[ADDRESS_REDACTED], Austin, TX 78701",
+    "credit_score": 742.0,
+    "monthly_income": 6800.0,
+    "monthly_debt": 1850.0,
+    "dti_ratio": 27.205882352941174,
+    "loan_amount": 420000.0,
+    "property_value": 560000.0,
+    "ltv_ratio": 75.0,
+    "employment_months": 49.0
+  },
+  "hard_rules": [
+    {
+      "rule": "Minimum credit score",
+      "status": "PASS",
+      "reason": "value=742.00, threshold >= 620.00",
+      "type": "HARD"
+    },
+    {
+      "rule": "Maximum DTI",
+      "status": "PASS",
+      "reason": "value=27.21, threshold <= 43.00",
+      "type": "HARD"
+    },
+    {
+      "rule": "Maximum LTV",
+      "status": "PASS",
+      "reason": "value=75.00, threshold <= 80.00",
+      "type": "HARD"
+    }
+  ],
+  "soft_guidelines": [
+    {
+      "rule": "Employment stability",
+      "status": "PASS",
+      "reason": "tenure_months=49, guideline >= 24",
+      "type": "SOFT"
+    }
+  ],
+  "risk_factors": [
+    "All evaluated hard rules passed and no material risk flags identified"
+  ],
+  "policy_citations": [
+    {
+      "source": "sample_loan_application.pdf",
+      "section": "0",
+      "score": "1.2978",
+      "snippet": "Mortgage Loan Application Summary Borrower: Alex Johnson DOB: [DOB_REDACTED] Property Address: [ADDRESS_REDACTED], Austin, TX 78701 Credit Score: 742 Loan Amount: $420,000.00 Property Value: $560,000.00 Monthly Income: $6,800.00 Monthly Debt: $1,850.00 Employment Tenure: 49 month"
+    },
+    {
+      "source": "sample_bank_statement.pdf",
+      "section": "0",
+      "score": "1.2990",
+      "snippet": "Bank Statement Borrower: Alex Johnson Statement Period: [DOB_REDACTED] - [DOB_REDACTED] Account Type: Checking Beginning Balance: $41,280.00 Deposits & Credits: $7,920.00 Withdrawals & Debits: $6,410.00 Available Balance: $42,790.00 Monthly Debt: $1,850.00 Mortgage Reserve Months"
+    },
+    {
+      "source": "adp-pay-stub-template.pdf",
+      "section": "0",
+      "score": "1.4345",
+      "snippet": "SAMPLE TEAR HERE                      \u00a92008, 2001, 2000, 1999 ADP, Inc. \u25b2 THE ORIGINAL DOCUMENT HAS A REFLECTIVE WATERMARK ON THE BACK.THE ORIGINAL DOCUMENT HAS A REFLECTIVE WATERMARK ON THE BACK. HOLD AT AN ANGLE TO VIEW WHEN CHECKING THE ENDORSEMENT.HOLD AT AN ANGLE TO VIEW WHE"
+    },
+    {
+      "source": "sample_employment_letter.pdf",
+      "section": "0",
+      "score": "1.4731",
+      "snippet": "Verification of Employment Letter Employment Letter Employee Name: Alex Johnson Employer Name: Acme Lending LLC Position: Senior Operations Analyst Employment Start Date: [DOB_REDACTED] Employment Tenure: 49 months Gross Monthly Income: $6,800.00 Status: Full-time, non-probationa"
+    },
+    {
+      "source": "W2_Interactive.pdf",
+      "section": "0",
+      "score": "1.5041",
+      "snippet": "Sample W-2 To read a brief description of a box on the W-2, move your mouse pointer over a box in the sample form.   Important: The information in this sample is specific to RUN powered by ADP only and should not be used as the official  W-2. In addition  to this sample, it\u2019s imp"
+    }
+  ],
+  "missing": []
+}

@@ -1,0 +1,15 @@
+{
+  "doc_id": "sample_id_document",
+  "fields": {},
+  "pii_found": [
+    {
+      "label": "DOB",
+      "value": "[DOB_REDACTED]"
+    },
+    {
+      "label": "ADDRESS",
+      "value": "[ADDRESS_REDACTED]"
+    }
+  ],
+  "redacted_text": "Government Identification Document\nPassport ID Document\nName: Alex Johnson\nDOB: [DOB_REDACTED]\nAddress: [ADDRESS_REDACTED], Austin, TX 78701\nID Number: P23874691\nIssued Country: United States\nKYC Verification: Complete\n"
+}

@@ -1,0 +1,6 @@
+classes:
+  MortgageLoan: Loan
+object_properties:
+  appliesFor: APPLIES_FOR
+data_properties:
+  loanAmount: amount

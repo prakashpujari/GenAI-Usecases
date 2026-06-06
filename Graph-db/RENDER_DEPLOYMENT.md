@@ -2,9 +2,105 @@
 
 ## Overview
 
-This guide walks you through deploying the Mortgage Graph Platform (React + FastAPI + Neo4j) to Render.
+This guide walks you through deploying the Mortgage Graph Platform (React + FastAPI + Neo4j) to Render using the **`render.yaml` Blueprint** (recommended) or manual setup.
 
 ## Prerequisites
+
+1. **Render Account**: Sign up at [render.com](https://render.com)
+2. **GitHub Account**: Already set up with the repository
+3. **Render API Key**: `rnd_XfRqbVaGn5DMF0FRZhqhRX1hU33u`
+4. **Neo4j Instance**: Use Neo4j Cloud Aura (free tier) or your own instance
+
+---
+
+## QUICK START: Blueprint Deployment (Recommended)
+
+### 1. Set Up Neo4j First
+
+**Go to Neo4j Cloud Aura:**
+1. Visit https://aura.neo4j.io
+2. Create a free Neo4j instance
+3. Copy the connection details:
+   - **URI**: `neo4j+s://xxxx.databases.neo4j.io` or `bolt://xxxx:7687`
+   - **Username**: `neo4j`
+   - **Password**: (your secure password)
+
+### 2. Deploy with Blueprint
+
+1. Go to [Render Dashboard](https://dashboard.render.com)
+2. Click **New** → **Blueprint**
+3. Paste GitHub repo: `https://github.com/prakashpujari/GenAI-Usecases`
+4. Render auto-detects `render.yaml` and shows:
+   - ✅ `mortgage-graph-api` (FastAPI)
+   - ✅ `mortgage-graph-ui` (React)
+   - ✅ `mortgage-graph-migrations` (Cron)
+   - ✅ `mortgage-graph-gds-jobs` (Cron)
+5. Click **Create Blueprint**
+
+### 3. Configure Environment Variables
+
+When Render prompts, set these for each service:
+
+**Backend Service (`mortgage-graph-api`)**:
+```env
+NEO4J_URI=neo4j+s://xxxx.databases.neo4j.io:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=your-neo4j-password
+NEO4J_DATABASE=neo4j
+STORAGE_BACKEND=neo4j
+LOG_LEVEL=info
+WORKERS=4
+```
+
+**Frontend Service (`mortgage-graph-ui`)**:
+```env
+VITE_API_BASE_URL=https://mortgage-graph-api.onrender.com
+VITE_API_TIMEOUT=30000
+NODE_ENV=production
+```
+
+### 4. Deploy
+
+Click **Deploy Blueprint** and wait for all services to be healthy (~5-10 minutes)
+
+### 5. Access Your Deployment
+
+- **Frontend**: https://mortgage-graph-ui.onrender.com
+- **Backend API**: https://mortgage-graph-api.onrender.com
+- **API Docs**: https://mortgage-graph-api.onrender.com/docs
+
+---
+
+## DETAILED SETUP: Manual Blueprint Configuration
+
+### Render.yaml Structure
+
+The `render.yaml` file defines all services in one configuration. Key sections:
+
+```yaml
+services:
+  - type: web              # FastAPI backend
+  - type: web              # React frontend
+  - type: cron             # Daily migrations
+  - type: cron             # Daily GDS jobs
+```
+
+### Environment Variables in render.yaml
+
+All services reference environment variables. You set their **values** in Render Dashboard:
+
+| Service | Variable | Example Value |
+|---------|----------|----------------|
+| API | `NEO4J_URI` | `neo4j+s://abc123.databases.neo4j.io:7687` |
+| API | `NEO4J_USER` | `neo4j` |
+| API | `NEO4J_PASSWORD` | (your secure password) |
+| UI | `VITE_API_BASE_URL` | `https://mortgage-graph-api.onrender.com` |
+
+---
+
+## STEP-BY-STEP MANUAL SETUP (Alternative)
+
+### Prerequisites
 
 1. **Render Account**: Sign up at [render.com](https://render.com)
 2. **GitHub Account**: Already set up with the repository
@@ -198,6 +294,172 @@ View logs in Render Dashboard:
 1. Go to service page
 2. Click "Logs" tab
 3. Filter by time or search for errors
+
+---
+
+## Services Overview (from render.yaml)
+
+### 1. FastAPI Backend (`mortgage-graph-api`)
+
+**Type**: Web Service  
+**Runtime**: Python  
+**Port**: Auto-assigned by Render  
+**Health Check**: `/health` endpoint
+
+**What it does:**
+- Runs FastAPI server with Uvicorn
+- Connects to Neo4j database
+- Exposes REST API endpoints
+- Handles loan ingestion, risk analysis, graph queries
+
+**Build Steps:**
+1. Install Python dependencies: `pip install -r requirements.txt`
+2. Start with: `python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+
+**Expected URL**: `https://mortgage-graph-api.onrender.com`
+
+---
+
+### 2. React Frontend (`mortgage-graph-ui`)
+
+**Type**: Web Service (Node.js)  
+**Runtime**: Node.js  
+**Port**: 3000  
+**Health Check**: `/` (index.html)
+
+**What it does:**
+- Builds React + Vite SPA
+- Serves compiled frontend
+- Proxies `/api/*` to backend
+- Shows Dashboard, Loans, Risk, Graph, Jobs pages
+
+**Build Steps:**
+1. Install npm dependencies: `npm ci`
+2. Build: `npm run build` (creates `frontend/dist`)
+3. Preview/Serve: `npm run preview`
+
+**Expected URL**: `https://mortgage-graph-ui.onrender.com`
+
+---
+
+### 3. Schema Migration Job (`mortgage-graph-migrations`)
+
+**Type**: Cron Job (background task)  
+**Runtime**: Python  
+**Schedule**: Daily at 2 AM UTC  
+**Command**: `python -m app.etl.migrate_schema`
+
+**What it does:**
+- Initializes Neo4j schema (nodes, relationships, indexes)
+- Idempotent (safe to run multiple times)
+- Runs automatically each day
+- Can be triggered manually from Render dashboard
+
+---
+
+### 4. GDS Analytics Job (`mortgage-graph-gds-jobs`)
+
+**Type**: Cron Job (background task)  
+**Runtime**: Python  
+**Schedule**: Daily at 3 AM UTC (after migrations)  
+**Command**: `python -m app.gds.run_gds_jobs`
+
+**What it does:**
+- Runs Graph Data Science algorithms
+- Computes centrality, community detection, etc.
+- Updates graph metrics
+- Runs automatically each day
+
+---
+
+## Verifying Deployment
+
+### Backend Health Check
+
+```bash
+# Check API is running
+curl https://mortgage-graph-api.onrender.com/health
+
+# Expected response:
+{
+  "status": "healthy",
+  "database": "connected",
+  "version": "1.0.0"
+}
+```
+
+### Frontend Access
+
+1. Open https://mortgage-graph-ui.onrender.com
+2. Navigate to **Dashboard** tab
+3. Should show API health status
+
+### Test Loan Ingestion
+
+```bash
+curl -X POST https://mortgage-graph-api.onrender.com/loans/ingest \
+  -H "Content-Type: application/json" \
+  -d '{
+    "borrower": {"borrowerId": "B001", "name": "Test User"},
+    "loan": {"loanId": "L001", "amount": 450000, "status": "submitted", "purpose": "purchase"},
+    "property": {"propertyId": "P001", "address": "123 Main", "city": "Austin", "state": "TX", "zip": "73301", "type": "single_family"},
+    "income": {"incomeId": "I001", "type": "w2", "employerName": "Test Co", "annualIncome": 180000},
+    "documents": []
+  }'
+```
+
+---
+
+## Monitoring & Troubleshooting
+
+### View Service Logs
+
+1. Go to [Render Dashboard](https://dashboard.render.com)
+2. Click on service name
+3. **Logs** tab shows real-time output
+4. Search for errors or filter by time
+
+### Common Issues
+
+**Backend won't start:**
+- Check NEO4J_URI, NEO4J_USER, NEO4J_PASSWORD are set
+- Verify Neo4j instance is running and accessible
+- Check logs for connection errors
+
+**Frontend won't build:**
+- Ensure `frontend/package.json` and dependencies are correct
+- Check Node.js version compatibility
+- Frontend needs Node 18+
+
+**Frontend can't reach API:**
+- Verify `VITE_API_BASE_URL` matches backend URL
+- Check CORS is enabled (should be default)
+- Clear browser cache (Ctrl+Shift+Delete)
+
+**Cron jobs not running:**
+- Check **Cron** tab in Render dashboard
+- Can manually trigger from dashboard
+- Check logs for execution status
+
+---
+
+## Advanced: Custom Domain
+
+### Add Custom Domain to Frontend
+
+1. Go to `mortgage-graph-ui` service
+2. **Settings** → **Custom Domain**
+3. Add your domain (e.g., `mortgage.example.com`)
+4. Follow DNS setup instructions
+
+### Add Custom Domain to API
+
+1. Go to `mortgage-graph-api` service
+2. **Settings** → **Custom Domain**
+3. Add your domain (e.g., `api.mortgage.example.com`)
+4. Update frontend `VITE_API_BASE_URL` if needed
+
+---
 
 ## Production Best Practices
 

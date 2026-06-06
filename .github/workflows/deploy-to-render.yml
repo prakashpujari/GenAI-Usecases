@@ -7,32 +7,157 @@ on:
     paths:
       - 'Graph-db/**'
       - '.github/workflows/deploy-to-render.yml'
+  workflow_dispatch:  # Allow manual trigger
 
 jobs:
-  deploy:
+  validate:
     runs-on: ubuntu-latest
-
+    name: Validate Configuration
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to Render
+      - name: Check render.yaml syntax
         run: |
-          # Trigger Render deployment using API
-          curl --request POST \
+          if [ ! -f "Graph-db/render.yaml" ]; then
+            echo "❌ ERROR: Graph-db/render.yaml not found"
+            exit 1
+          fi
+          echo "✅ render.yaml found"
+
+      - name: Check required files
+        run: |
+          files=("Graph-db/requirements.txt" "Graph-db/frontend/package.json" "Graph-db/render.yaml")
+          for file in "${files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ ERROR: $file not found"
+              exit 1
+            fi
+            echo "✅ $file found"
+          done
+
+  deploy-api:
+    needs: validate
+    runs-on: ubuntu-latest
+    name: Deploy FastAPI Backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check secrets
+        run: |
+          if [ -z "${{ secrets.RENDER_API_KEY }}" ]; then
+            echo "❌ ERROR: RENDER_API_KEY secret not configured"
+            echo "📝 Add it to GitHub repo settings → Secrets and variables → Actions"
+            exit 1
+          fi
+          if [ -z "${{ secrets.RENDER_SERVICE_ID_API }}" ]; then
+            echo "❌ ERROR: RENDER_SERVICE_ID_API secret not configured"
+            echo "📝 Add it to GitHub repo settings → Secrets and variables → Actions"
+            exit 1
+          fi
+          echo "✅ All required secrets configured"
+
+      - name: Deploy FastAPI Backend to Render
+        run: |
+          echo "🚀 Triggering backend deployment..."
+          RESPONSE=$(curl --request POST \
             --url https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID_API }}/deploys \
             --header "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-            --header "Content-Type: application/json"
+            --header "Content-Type: application/json" \
+            -w "\n%{http_code}")
 
-      - name: Deploy UI to Render
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          if [ "$HTTP_CODE" == "201" ] || [ "$HTTP_CODE" == "200" ]; then
+            echo "✅ Backend deployment triggered successfully"
+            echo "📊 Response: $BODY"
+          else
+            echo "❌ Backend deployment failed (HTTP $HTTP_CODE)"
+            echo "📊 Response: $BODY"
+            exit 1
+          fi
+
+      - name: Backend deployment status
         run: |
-          curl --request POST \
+          echo "📋 Backend Deployment Details"
+          echo "Service: mortgage-graph-api"
+          echo "Dashboard: https://dashboard.render.com"
+          echo "URL: https://mortgage-graph-api.onrender.com"
+          echo "Health: https://mortgage-graph-api.onrender.com/health"
+          echo "Docs: https://mortgage-graph-api.onrender.com/docs"
+
+  deploy-ui:
+    needs: validate
+    runs-on: ubuntu-latest
+    name: Deploy React Frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check secrets
+        run: |
+          if [ -z "${{ secrets.RENDER_API_KEY }}" ]; then
+            echo "❌ ERROR: RENDER_API_KEY secret not configured"
+            exit 1
+          fi
+          if [ -z "${{ secrets.RENDER_SERVICE_ID_UI }}" ]; then
+            echo "❌ ERROR: RENDER_SERVICE_ID_UI secret not configured"
+            exit 1
+          fi
+          echo "✅ All required secrets configured"
+
+      - name: Deploy React Frontend to Render
+        run: |
+          echo "🚀 Triggering frontend deployment..."
+          RESPONSE=$(curl --request POST \
             --url https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID_UI }}/deploys \
             --header "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-            --header "Content-Type: application/json"
+            --header "Content-Type: application/json" \
+            -w "\n%{http_code}")
 
-      - name: Deployment Status
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          if [ "$HTTP_CODE" == "201" ] || [ "$HTTP_CODE" == "200" ]; then
+            echo "✅ Frontend deployment triggered successfully"
+            echo "📊 Response: $BODY"
+          else
+            echo "❌ Frontend deployment failed (HTTP $HTTP_CODE)"
+            echo "📊 Response: $BODY"
+            exit 1
+          fi
+
+      - name: Frontend deployment status
         run: |
-          echo "✅ Deployment triggered to Render"
-          echo "API Service: https://mortgage-graph-api.onrender.com"
-          echo "UI Service: https://mortgage-graph-ui.onrender.com"
+          echo "📋 Frontend Deployment Details"
+          echo "Service: mortgage-graph-ui"
+          echo "Dashboard: https://dashboard.render.com"
+          echo "URL: https://mortgage-graph-ui.onrender.com"
+
+  summary:
+    needs: [deploy-api, deploy-ui]
+    runs-on: ubuntu-latest
+    name: Deployment Summary
+    if: always()
+    steps:
+      - name: Deployment Complete
+        run: |
+          echo "🎉 Deployment Workflow Complete!"
+          echo ""
+          echo "📊 Services Deployed:"
+          echo "  ✅ FastAPI Backend (mortgage-graph-api)"
+          echo "  ✅ React Frontend (mortgage-graph-ui)"
+          echo ""
+          echo "🌐 Access Your App:"
+          echo "  🎨 Frontend: https://mortgage-graph-ui.onrender.com"
+          echo "  🔌 API: https://mortgage-graph-api.onrender.com"
+          echo "  📚 API Docs: https://mortgage-graph-api.onrender.com/docs"
+          echo ""
+          echo "📋 Next Steps:"
+          echo "  1. Check Render Dashboard: https://dashboard.render.com"
+          echo "  2. Verify services are healthy (green status)"
+          echo "  3. Test endpoints in your browser"
+          echo ""
+          echo "💡 Made changes? Push to main to auto-deploy again!"

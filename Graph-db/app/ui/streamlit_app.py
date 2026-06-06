@@ -322,11 +322,11 @@ def main() -> None:
         st.write("Run Cypher and visualize returned paths, nodes, and relationships.")
         neo_col_1, neo_col_2, neo_col_3 = st.columns(3)
         with neo_col_1:
-            neo4j_uri = st.text_input("Neo4j URI", value=os.getenv("NEO4J_URI", "bolt://localhost:7687"))
-            neo4j_user = st.text_input("Neo4j User", value=os.getenv("NEO4J_USER", "neo4j"))
+            neo4j_uri = st.text_input("Neo4j URI", value=os.getenv("NEO4J_URI", "neo4j+s://5e8389cd.databases.neo4j.io"))
+            neo4j_user = st.text_input("Neo4j User", value=os.getenv("NEO4J_USER", "5e8389cd"))
         with neo_col_2:
             neo4j_password = st.text_input("Neo4j Password", value=os.getenv("NEO4J_PASSWORD", ""), type="password")
-            neo4j_database = st.text_input("Database", value=os.getenv("NEO4J_DATABASE", "neo4j"))
+            neo4j_database = st.text_input("Database", value=os.getenv("NEO4J_DATABASE", "5e8389cd"))
         with neo_col_3:
             presets = {
                 "Loan neighborhood": "MATCH p=(l:Loan {loanId: 'L101'})-[*1..2]-(n) RETURN p LIMIT 50",

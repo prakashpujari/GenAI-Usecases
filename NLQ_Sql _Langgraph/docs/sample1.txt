@@ -1,0 +1,8 @@
+Mortgage RAG Example
+===================
+
+This is a sample document for testing FAISS vector DB ingestion.
+
+- Mortgage rates are determined by the lender.
+- Applications can be approved, pending, or rejected.
+- The approval process usually takes 30 days.

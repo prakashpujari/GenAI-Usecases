@@ -1,0 +1,18 @@
+from functools import lru_cache
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    openai_api_key: str
+    openai_model: str = "gpt-4o"
+    openai_embedding_model: str = "text-embedding-3-small"
+    postgres_dsn: str = "postgresql://postgres:postgres@localhost:5432/postgres"
+    log_level: str = "INFO"
+
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+
+@lru_cache
+def get_settings() -> Settings:
+    return Settings()

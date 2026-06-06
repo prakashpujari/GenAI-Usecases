@@ -10,10 +10,10 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     timezone: str = "UTC"
 
-    neo4j_uri: str = "bolt://localhost:7687"
-    neo4j_user: str = "neo4j"
-    neo4j_password: str = "password"
-    neo4j_database: str = "neo4j"
+    neo4j_uri: str = "neo4j+s://5e8389cd.databases.neo4j.io"
+    neo4j_user: str = "5e8389cd"
+    neo4j_password: str = "X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc"
+    neo4j_database: str = "5e8389cd"
 
     storage_backend: Literal["neo4j", "postgres"] = "neo4j"
     postgres_dsn: str = "postgresql://localhost:5432/postgres"

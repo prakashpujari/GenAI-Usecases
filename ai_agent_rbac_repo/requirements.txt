@@ -1,0 +1,7 @@
+langchain
+pydantic
+redis
+pinecone-client
+tenacity
+pybreaker
+boto3

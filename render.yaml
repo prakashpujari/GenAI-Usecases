@@ -27,22 +27,22 @@ services:
     envVars:
       - key: NEO4J_URI
         scope: run_and_build
-        value: neo4j+s://5e8389cd.databases.neo4j.io
+        value: "neo4j+s://5e8389cd.databases.neo4j.io"
         # Your Neo4j Aura connection URI
 
       - key: NEO4J_USERNAME
         scope: run_and_build
-        value: 5e8389cd
+        value: "5e8389cd"
         # Neo4j Aura username (instance ID)
 
       - key: NEO4J_PASSWORD
         scope: run_and_build
-        value: X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc
+        value: "X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc"
         # Neo4j Aura password (keep secure!)
 
       - key: NEO4J_DATABASE
         scope: run_and_build
-        value: 5e8389cd
+        value: "5e8389cd"
         # Neo4j Aura database name (instance ID)
 
       - key: STORAGE_BACKEND
@@ -141,19 +141,19 @@ services:
     envVars:
       - key: NEO4J_URI
         scope: run_and_build
-        value: neo4j+s://5e8389cd.databases.neo4j.io
+        value: "neo4j+s://5e8389cd.databases.neo4j.io"
 
       - key: NEO4J_USERNAME
         scope: run_and_build
-        value: 5e8389cd
+        value: "5e8389cd"
 
       - key: NEO4J_PASSWORD
         scope: run_and_build
-        value: X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc
+        value: "X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc"
 
       - key: NEO4J_DATABASE
         scope: run_and_build
-        value: 5e8389cd
+        value: "5e8389cd"
 
       - key: STORAGE_BACKEND
         scope: run_and_build

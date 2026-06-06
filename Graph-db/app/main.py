@@ -1,7 +1,5 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from pathlib import Path
 
 from app.api.routes_enhanced import router
 from app.config.logging import configure_logging
@@ -35,7 +33,5 @@ app.add_middleware(
 # Include enhanced API routes
 app.include_router(router)
 
-# Serve frontend static files (for production Docker deployment)
-frontend_path = Path(__file__).parent.parent / "frontend" / "dist"
-if frontend_path.exists():
-    app.mount("/", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
+# Note: Frontend is served by Vercel, not from this API server
+# Static files mount removed to prevent blocking API routes

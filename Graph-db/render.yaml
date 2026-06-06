@@ -11,7 +11,7 @@ services:
     plan: standard
 
     # Source configuration
-    repo: https://github.com/your-username/GenAI-Usecases
+    repo: https://github.com/prakashpujari/GenAI-Usecases
     branch: main
     rootDir: Graph-db
 
@@ -27,25 +27,23 @@ services:
     envVars:
       - key: NEO4J_URI
         scope: run_and_build
-        value: bolt://${NEO4J_HOST}:7687
-        # Override this in Render dashboard with your Neo4j URI
-        # Example: bolt://your-neo4j-instance.neo4jlabs.io:7687
+        value: neo4j+s://5e8389cd.databases.neo4j.io
+        # Your Neo4j Aura connection URI
 
-      - key: NEO4J_USER
+      - key: NEO4J_USERNAME
         scope: run_and_build
-        fromDatabase:
-          name: neo4j-credentials
-          property: user
+        value: 5e8389cd
+        # Neo4j Aura username (instance ID)
 
       - key: NEO4J_PASSWORD
         scope: run_and_build
-        fromDatabase:
-          name: neo4j-credentials
-          property: password
+        value: X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc
+        # Neo4j Aura password (keep secure!)
 
       - key: NEO4J_DATABASE
         scope: run_and_build
-        value: neo4j
+        value: 5e8389cd
+        # Neo4j Aura database name (instance ID)
 
       - key: STORAGE_BACKEND
         scope: run_and_build
@@ -87,7 +85,7 @@ services:
     plan: standard
 
     # Source configuration
-    repo: https://github.com/your-username/GenAI-Usecases
+    repo: https://github.com/prakashpujari/GenAI-Usecases
     branch: main
     rootDir: Graph-db/frontend
 
@@ -126,7 +124,7 @@ services:
     name: mortgage-graph-migrations
     runtime: python
 
-    repo: https://github.com/your-username/GenAI-Usecases
+    repo: https://github.com/prakashpujari/GenAI-Usecases
     branch: main
     rootDir: Graph-db
 
@@ -143,23 +141,19 @@ services:
     envVars:
       - key: NEO4J_URI
         scope: run_and_build
-        value: bolt://${NEO4J_HOST}:7687
+        value: neo4j+s://5e8389cd.databases.neo4j.io
 
-      - key: NEO4J_USER
+      - key: NEO4J_USERNAME
         scope: run_and_build
-        fromDatabase:
-          name: neo4j-credentials
-          property: user
+        value: 5e8389cd
 
       - key: NEO4J_PASSWORD
         scope: run_and_build
-        fromDatabase:
-          name: neo4j-credentials
-          property: password
+        value: X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc
 
       - key: NEO4J_DATABASE
         scope: run_and_build
-        value: neo4j
+        value: 5e8389cd
 
       - key: STORAGE_BACKEND
         scope: run_and_build
@@ -170,7 +164,7 @@ services:
     name: mortgage-graph-gds-jobs
     runtime: python
 
-    repo: https://github.com/your-username/GenAI-Usecases
+    repo: https://github.com/prakashpujari/GenAI-Usecases
     branch: main
     rootDir: Graph-db
 
@@ -187,36 +181,23 @@ services:
     envVars:
       - key: NEO4J_URI
         scope: run_and_build
-        value: bolt://${NEO4J_HOST}:7687
+        value: neo4j+s://5e8389cd.databases.neo4j.io
 
-      - key: NEO4J_USER
+      - key: NEO4J_USERNAME
         scope: run_and_build
-        fromDatabase:
-          name: neo4j-credentials
-          property: user
+        value: 5e8389cd
 
       - key: NEO4J_PASSWORD
         scope: run_and_build
-        fromDatabase:
-          name: neo4j-credentials
-          property: password
+        value: X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc
 
       - key: NEO4J_DATABASE
         scope: run_and_build
-        value: neo4j
+        value: 5e8389cd
 
       - key: STORAGE_BACKEND
         scope: run_and_build
         value: neo4j
-
-# Databases
-databases:
-  - name: neo4j-credentials
-    databaseName: neo4j_credentials
-    version: "13"
-    plan: starter
-    # This stores Neo4j connection details
-    # You'll manually set the user and password after creation
 
 # Redirects (optional, for apex domain)
 redirects:

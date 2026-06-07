@@ -1,206 +1,86 @@
 services:
-  # Neo4j Database Service
-  # Note: Neo4j is not directly supported by Render's managed databases.
-  # Option 1: Use Neo4j Cloud (https://neo4j.com/cloud/) - recommended for production
-  # Option 2: Deploy as a private service (see backend service environment variables)
-
-  # FastAPI Backend Service
   - type: web
     name: mortgage-graph-api
     runtime: python
     plan: standard
-
-    # Source configuration
     repo: https://github.com/prakashpujari/GenAI-Usecases
     branch: main
     rootDir: Graph-db
-
-    # Build configuration
-    buildCommand: |
-      pip install --upgrade pip
-      pip install -r requirements.txt
-
-    startCommand: |
-      python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
-
-    # Environment variables (set in Render dashboard or .env)
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
     envVars:
       - key: NEO4J_URI
-        scope: run_and_build
-        value: neo4j+s://5e8389cd.databases.neo4j.io
-        # Your Neo4j Aura connection URI
-
+        value: "neo4j+s://5e8389cd.databases.neo4j.io"
       - key: NEO4J_USERNAME
-        scope: run_and_build
-        value: 5e8389cd
-        # Neo4j Aura username (instance ID)
-
+        value: "5e8389cd"
       - key: NEO4J_PASSWORD
-        scope: run_and_build
-        value: X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc
-        # Neo4j Aura password (keep secure!)
-
+        value: "X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc"
       - key: NEO4J_DATABASE
-        scope: run_and_build
-        value: 5e8389cd
-        # Neo4j Aura database name (instance ID)
-
+        value: "5e8389cd"
       - key: STORAGE_BACKEND
-        scope: run_and_build
         value: neo4j
-
-      - key: DATA_PATH
-        scope: run_and_build
-        value: /tmp/data
-
-      - key: EXPORT_PATH
-        scope: run_and_build
-        value: /tmp/exports
-
       - key: LOG_LEVEL
-        scope: run_and_build
         value: info
-
       - key: WORKERS
-        scope: run_and_build
         value: "4"
 
-    # Health check
-    healthCheckPath: /health
-    healthCheckStartingDelay: 30
-
-    # Autoscaling
-    numInstances: 1
-
-    # Disk and memory
-    disk:
-      name: mortgage-graph-data
-      mountPath: /tmp
-      sizeGB: 10
-
-  # React Frontend Service
   - type: web
     name: mortgage-graph-ui
     runtime: node
     plan: standard
-
-    # Source configuration
     repo: https://github.com/prakashpujari/GenAI-Usecases
     branch: main
     rootDir: Graph-db/frontend
-
-    # Build configuration
-    buildCommand: |
-      npm ci
-      npm run build
-
-    startCommand: |
-      npm run preview
-
-    # Environment variables for frontend
+    buildCommand: npm ci && npm run build
+    startCommand: npm run preview
+    healthCheckPath: /
     envVars:
       - key: VITE_API_BASE_URL
-        scope: run_and_build
-        value: https://mortgage-graph-api.onrender.com
-        # This should match your backend service URL on Render
-
+        value: "https://mortgage-graph-api.onrender.com"
       - key: VITE_API_TIMEOUT
-        scope: run_and_build
         value: "30000"
-
       - key: NODE_ENV
-        scope: run_and_build
         value: production
 
-    # Health check
-    healthCheckPath: /
-    healthCheckStartingDelay: 10
-
-    # Autoscaling
-    numInstances: 1
-
-  # Optional: Cron Job for ETL/Schema Migrations
   - type: cron
     name: mortgage-graph-migrations
     runtime: python
-
     repo: https://github.com/prakashpujari/GenAI-Usecases
     branch: main
     rootDir: Graph-db
-
-    buildCommand: |
-      pip install --upgrade pip
-      pip install -r requirements.txt
-
-    startCommand: |
-      python -m app.etl.migrate_schema
-
-    # Run daily at 2 AM UTC
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m app.etl.migrate_schema
     schedule: "0 2 * * *"
-
     envVars:
       - key: NEO4J_URI
-        scope: run_and_build
-        value: neo4j+s://5e8389cd.databases.neo4j.io
-
+        value: "neo4j+s://5e8389cd.databases.neo4j.io"
       - key: NEO4J_USERNAME
-        scope: run_and_build
-        value: 5e8389cd
-
+        value: "5e8389cd"
       - key: NEO4J_PASSWORD
-        scope: run_and_build
-        value: X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc
-
+        value: "X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc"
       - key: NEO4J_DATABASE
-        scope: run_and_build
-        value: 5e8389cd
-
+        value: "5e8389cd"
       - key: STORAGE_BACKEND
-        scope: run_and_build
         value: neo4j
 
-  # Optional: Cron Job for GDS Analytics
   - type: cron
     name: mortgage-graph-gds-jobs
     runtime: python
-
     repo: https://github.com/prakashpujari/GenAI-Usecases
     branch: main
     rootDir: Graph-db
-
-    buildCommand: |
-      pip install --upgrade pip
-      pip install -r requirements.txt
-
-    startCommand: |
-      python -m app.gds.run_gds_jobs
-
-    # Run daily at 3 AM UTC (after migrations)
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m app.gds.run_gds_jobs
     schedule: "0 3 * * *"
-
     envVars:
       - key: NEO4J_URI
-        scope: run_and_build
-        value: neo4j+s://5e8389cd.databases.neo4j.io
-
+        value: "neo4j+s://5e8389cd.databases.neo4j.io"
       - key: NEO4J_USERNAME
-        scope: run_and_build
-        value: 5e8389cd
-
+        value: "5e8389cd"
       - key: NEO4J_PASSWORD
-        scope: run_and_build
-        value: X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc
-
+        value: "X5jQWpBNYLpnRtZEI13ntnWnpKCz1vkOOecIyWiGVwc"
       - key: NEO4J_DATABASE
-        scope: run_and_build
-        value: 5e8389cd
-
+        value: "5e8389cd"
       - key: STORAGE_BACKEND
-        scope: run_and_build
         value: neo4j
-
-# Redirects (optional, for apex domain)
-redirects:
-  - source: https://yourcompany.com
-    destination: https://mortgage-graph-ui.onrender.com
-    type: permanent
